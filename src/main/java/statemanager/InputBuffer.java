@@ -24,13 +24,22 @@ public class InputBuffer {
         return ib_instance;
     }
 
-    private String readStream(InputStream is, Charset cs) throws IOException{
+    public void streamToBuffer(InputStream is) {
+        try {
+            String commands = readStream(is, "UTF-8");
+            push(commands);
+        } catch (IOException e){
+            System.out.println(e);
+        }
+    }
+
+    private String readStream(InputStream is, String charSet) throws IOException{
         StringBuilder stringBuilder = new StringBuilder();
         String line = null;
 
         /* Not sure if the while statement below will close the stream early or not.
         */
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, cs))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, charSet))) {
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
             }
