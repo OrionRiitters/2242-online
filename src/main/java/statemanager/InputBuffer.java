@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class InputBuffer {
@@ -27,18 +28,18 @@ public class InputBuffer {
      * Return slot that String was inserted into.
      */
     public int streamToBuffer(InputStream is) throws IOException {
-        String commands = readStream(is, "UTF-8");
+        String commands = readStream(is);
         int slot = push(commands);
         return slot;
     }
 
-    private String readStream(InputStream is, String charSet) throws IOException{
+    private String readStream(InputStream is) throws IOException{
         StringBuilder stringBuilder = new StringBuilder();
         String line = null;
 
         /* Not sure if the while statement below will close the stream early or not.
         */
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, charSet))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
             }

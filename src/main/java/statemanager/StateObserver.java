@@ -7,21 +7,19 @@ import java.util.Observer;
 
 public class StateObserver implements Observer {
 
-    private OutputStream os;
+    private String gameState = null;
 
     @Override
     public void update(Observable scheduler, Object state) {
-        String stateStr = state.toString();
-        try {
-            os.write(stateStr.getBytes());
-            os.close();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+        gameState = state.toString();
     }
 
-    public void setOs(OutputStream os) {
-        this.os = os;
+    public String getGameState() {
+        return gameState;
+    }
+
+    public void resetGameState() {
+        this.gameState = null;
     }
 
 }

@@ -1,20 +1,68 @@
 package statemanager;
 
+import com.sun.net.httpserver.HttpExchange;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
 public class Scheduler {
 
+    /* Observer interface must be decoupled from Scheduler because
+     * a different Observer is used for each HttpExchange and
+     * Scheduler manages the HttpExchanges.
+     */
+    private static Scheduler scheduler_instance = null;
     private Observable stateObservable = new StateObservable();
-    private Observer[] observers = new Observer[4];
+    private StateObserver[] observers = new StateObserver[4];
 
-    public void Scheduler() {
-        createObservers();
+    /* This class implements the singleton design pattern
+     */
+    public static Scheduler Scheduler() {
+
+        if (scheduler_instance == null) {
+            scheduler_instance = new Scheduler();
+            scheduler_instance.createObservers();
+            scheduler_instance.attachObservers();
+        }
+        return scheduler_instance;
     }
 
     public void createObservers() {
         Arrays.fill(observers, new StateObserver());
+    }
+
+    public void attachObservers() {
+        for (Observer o : observers) {
+            stateObservable.addObserver(o);
+        }
+    }
+
+    /* Acquires observer location via slot and HttpExchange from HttpHandler.
+     * Waits for StateObserver to acquire game state from StateObserved,
+     * then writes that state to response in HttpExchange.
+     */
+    public void writeResponse(int slot, HttpExchange t) {
+        StateObserver observer = observers[slot];
+        while (observer.getGameState() == null) {
+            // Wait
+        }
+
+        String response = observer.getGameState();
+        try {
+            t.sendResponseHeaders(200, response.getBytes(StandardCharsets.UTF_8).length);
+            OutputStream os = t.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        } finally {
+            observer.resetGameState();
+        }
+
     }
 
 }
