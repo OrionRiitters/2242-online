@@ -9,8 +9,9 @@ public class StateObservable extends Observable {
     public void setGameState(String gameState) {
         this.gameState = gameState;
         setChanged();
-        notifyObservers();
+        notifyObservers(gameState);
     }
+
 
 
 

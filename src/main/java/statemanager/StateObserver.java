@@ -11,7 +11,7 @@ public class StateObserver implements Observer {
 
     @Override
     public void update(Observable scheduler, Object state) {
-        gameState = state.toString();
+        String gameState = state.toString();
     }
 
     public String getGameState() {

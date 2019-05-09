@@ -1,5 +1,6 @@
 package statemanager;
 
+import Game.Placeholder;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
@@ -9,14 +10,15 @@ import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
-public class Scheduler {
+public class Scheduler extends Thread {
 
     /* Observer interface must be decoupled from Scheduler because
      * a different Observer is used for each HttpExchange and
      * Scheduler manages the HttpExchanges.
      */
     private static Scheduler scheduler_instance = null;
-    private Observable stateObservable = new StateObservable();
+    private InputBuffer inputBuffer = InputBuffer.InputBuffer();
+    private StateObservable stateObservable = new StateObservable();
     private StateObserver[] observers = new StateObserver[4];
 
     /* This class implements the singleton design pattern
@@ -27,6 +29,7 @@ public class Scheduler {
             scheduler_instance = new Scheduler();
             scheduler_instance.createObservers();
             scheduler_instance.attachObservers();
+
         }
         return scheduler_instance;
     }
@@ -63,6 +66,31 @@ public class Scheduler {
             observer.resetGameState();
         }
 
+    }
+
+    public void updateObservable() {
+        Long ms = System.currentTimeMillis();
+        String mString = ms.toString();
+        stateObservable.setGameState(mString);
+    }
+
+    public void bufferToGame() {
+        String[] buffer = inputBuffer.getBuffer();
+        long ms = Placeholder.consumeBuffer(buffer);
+
+    }
+
+    @Override
+    public void run() {
+        long then = System.currentTimeMillis();
+        long now = System.currentTimeMillis();
+
+        while(true) {
+            while(now - then < 200) {
+                now = System.currentTimeMillis();
+            }
+            updateObservable();
+        }
     }
 
 }

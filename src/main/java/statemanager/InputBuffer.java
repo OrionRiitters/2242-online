@@ -56,9 +56,13 @@ public class InputBuffer {
         return slot;
     }
 
+    protected String[] getBuffer() {
+        return buffer;
+    }
+
     /* Empty buffer for next round of input.
     */
-    private void flush() {
+    protected void flush() {
         Arrays.fill(buffer, null);
         bufferSlot = 0;
     }
