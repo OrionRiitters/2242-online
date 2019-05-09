@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 
 public class InputBuffer {
@@ -24,13 +23,13 @@ public class InputBuffer {
         return ib_instance;
     }
 
-    public void streamToBuffer(InputStream is) {
-        try {
-            String commands = readStream(is, "UTF-8");
-            push(commands);
-        } catch (IOException e){
-            System.out.println(e);
-        }
+    /* Transform InputStream into String, then push String to buffer.
+     * Return slot that String was inserted into.
+     */
+    public int streamToBuffer(InputStream is) throws IOException {
+        String commands = readStream(is, "UTF-8");
+        int slot = push(commands);
+        return slot;
     }
 
     private String readStream(InputStream is, String charSet) throws IOException{
@@ -43,14 +42,17 @@ public class InputBuffer {
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
             }
-
         }
         return stringBuilder.toString();
     }
 
-    private void push(String s) {
+    /* Insert string into buffer. Return slot that string was inserted into.
+     */
+    private int push(String s) {
+        int slot = bufferSlot;
         buffer[bufferSlot] = s;
         bufferSlot++;
+        return slot;
     }
 
     /* Empty buffer for next round of input.

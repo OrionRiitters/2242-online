@@ -7,8 +7,6 @@ import java.util.Observer;
 
 public class StateObserver implements Observer {
 
-
-
     private OutputStream os;
 
     @Override
@@ -20,7 +18,6 @@ public class StateObserver implements Observer {
         } catch (IOException e) {
             System.out.println(e);
         }
-
     }
 
     public void setOs(OutputStream os) {
