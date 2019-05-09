@@ -53,13 +53,14 @@ public class Scheduler extends Thread {
         while (observer.getGameState() == null) {
             // Wait
         }
-
         String response = observer.getGameState();
+        System.out.println(response);
         try {
             t.sendResponseHeaders(200, response.getBytes(StandardCharsets.UTF_8).length);
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
             os.close();
+            System.out.println("Output stream closed?");
         } catch (IOException e) {
             System.out.println(e);
         } finally {
@@ -75,8 +76,8 @@ public class Scheduler extends Thread {
     }
 
     public void bufferToGame() {
-        String[] buffer = inputBuffer.getBuffer();
-        long ms = Placeholder.consumeBuffer(buffer);
+        updateObservable();
+        inputBuffer.flush();
 
     }
 
@@ -89,7 +90,8 @@ public class Scheduler extends Thread {
             while(now - then < 200) {
                 now = System.currentTimeMillis();
             }
-            updateObservable();
+            then = now;
+            bufferToGame();
         }
     }
 

@@ -29,6 +29,7 @@ public class InputBuffer {
      */
     public int streamToBuffer(InputStream is) throws IOException {
         String commands = readStream(is);
+        System.out.println(commands);
         int slot = push(commands);
         return slot;
     }
