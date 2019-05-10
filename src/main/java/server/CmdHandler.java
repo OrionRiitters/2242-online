@@ -12,10 +12,10 @@ public class CmdHandler implements HttpHandler {
 
     public void handle(HttpExchange t) throws IOException {
         InputStream is = t.getRequestBody();
-        InputBuffer inputBuffer = InputBuffer.InputBuffer();
+        InputBuffer inputBuffer = InputBuffer.get_instance();
 
         int slot = inputBuffer.streamToBuffer(is);
-        Scheduler scheduler = Scheduler.Scheduler();
+        Scheduler scheduler = Scheduler.get_instance();
 
         long now = System.currentTimeMillis();
         scheduler.writeResponse(slot, t, now);

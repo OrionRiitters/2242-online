@@ -1,13 +1,11 @@
 package statemanager;
 
-import Game.Placeholder;
+import gamelogic.Placeholder;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Observable;
 import java.util.Observer;
 
 public class Scheduler extends Thread {
@@ -16,22 +14,22 @@ public class Scheduler extends Thread {
      * a different Observer is used for each HttpExchange and
      * Scheduler manages the HttpExchanges.
      */
-    private static Scheduler scheduler_instance = null;
-    private InputBuffer inputBuffer = InputBuffer.InputBuffer();
-    private StateObservable stateObservable = new StateObservable();
+    private static Scheduler _instance = null;
+    private InputBuffer inputBuffer = InputBuffer.get_instance();
+    private StateObservable stateObservable = StateObservable.get_instance();
     private StateObserver[] observers = new StateObserver[4];
 
     /* This class implements the singleton design pattern
      */
-    public static Scheduler Scheduler() {
+    public static Scheduler get_instance() {
 
-        if (scheduler_instance == null) {
-            scheduler_instance = new Scheduler();
-            scheduler_instance.createObservers();
-            scheduler_instance.attachObservers();
+        if (_instance == null) {
+            _instance = new Scheduler();
+            _instance.createObservers();
+            _instance.attachObservers();
 
         }
-        return scheduler_instance;
+        return _instance;
     }
 
     public void createObservers() {
@@ -45,14 +43,14 @@ public class Scheduler extends Thread {
     }
 
     /* Acquires observer location via slot and HttpExchange from HttpHandler.
-     * Waits for StateObserver to acquire game state from StateObserved,
+     * Waits for StateObserver to acquire gamelogic state from StateObserved,
      * then writes that state to response in HttpExchange.
      */
     public void writeResponse(int slot, HttpExchange t, long then) throws IOException {
         StateObserver observer = observers[slot];
         String response;
 
-        /* If game state was never updated, timeout after 200 ms
+        /* If gamelogic state was never updated, timeout after 200 ms
          */
         while (observer.getGameState() == null) {
             long now = System.currentTimeMillis();
@@ -72,22 +70,14 @@ public class Scheduler extends Thread {
             t.getResponseBody().close();
             observer.resetGameState();
         }
-
-    } /* Placeholder for game logic that will update Observable's state
-       */
-    public void updateObservable() {
-        Long ms = System.currentTimeMillis();
-        String mString = ms.toString();
-        stateObservable.setGameState(mString);
     }
-    /* Called by scheduler thread to push client commands to game
+    /* Called by scheduler thread to push client commands to gamelogic
      */
     public void bufferToGame() {
-        updateObservable();
+        Placeholder.consumeBuffer(inputBuffer.getBuffer());
         inputBuffer.flush();
-
     }
-    /* Thread run by main to push commands to game
+    /* Thread run by main to push commands to gamelogic
      */
     @Override
     public void run() {

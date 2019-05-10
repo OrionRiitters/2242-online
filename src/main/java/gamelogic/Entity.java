@@ -1,4 +1,4 @@
-package game;
+package gamelogic;
 
 public abstract class Entity { // This abstract class will contain Vessel and Projectile.
 

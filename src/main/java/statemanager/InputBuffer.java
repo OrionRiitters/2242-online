@@ -10,18 +10,18 @@ import java.util.Arrays;
 
 public class InputBuffer {
 
-    private static InputBuffer ib_instance = null;
+    private static InputBuffer _instance = null;
     private String[] buffer = new String[4];
     private int bufferSlot = 0;
 
     /* This class implements the singleton design pattern
     */
-    public static InputBuffer InputBuffer() {
+    public static InputBuffer get_instance() {
 
-        if (ib_instance == null) {
-            ib_instance = new InputBuffer();
+        if (_instance == null) {
+            _instance = new InputBuffer();
         }
-        return ib_instance;
+        return _instance;
     }
 
     /* Transform InputStream into String, then push String to buffer.

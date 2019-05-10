@@ -1,4 +1,4 @@
-package game;
+package gamelogic;
 
 public class PlayerVessel extends Vessel {
 

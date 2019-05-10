@@ -7,7 +7,7 @@ public class Main {
         TheServer server = new TheServer();
         server.start();
 
-        Scheduler scheduler = Scheduler.Scheduler();
+        Scheduler scheduler = Scheduler.get_instance();
         scheduler.run();
 
     }
