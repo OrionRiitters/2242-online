@@ -16,6 +16,8 @@ public class CmdHandler implements HttpHandler {
 
         int slot = inputBuffer.streamToBuffer(is);
         Scheduler scheduler = Scheduler.Scheduler();
-        scheduler.writeResponse(slot, t);
+
+        long now = System.currentTimeMillis();
+        scheduler.writeResponse(slot, t, now);
     }
 }

@@ -48,39 +48,47 @@ public class Scheduler extends Thread {
      * Waits for StateObserver to acquire game state from StateObserved,
      * then writes that state to response in HttpExchange.
      */
-    public void writeResponse(int slot, HttpExchange t) {
+    public void writeResponse(int slot, HttpExchange t, long then) throws IOException {
         StateObserver observer = observers[slot];
+        String response;
+
+        /* If game state was never updated, timeout after 200 ms
+         */
         while (observer.getGameState() == null) {
-            // Wait
+            long now = System.currentTimeMillis();
+            if (now - then > 200) break;
         }
-        String response = observer.getGameState();
-        System.out.println(response);
+
+        /* Set response to something else when gameState update times out
+         */
+        response = observer.getGameState() == null ? "Observer timeout" : observer.getGameState();
         try {
             t.sendResponseHeaders(200, response.getBytes(StandardCharsets.UTF_8).length);
-            OutputStream os = t.getResponseBody();
-            os.write(response.getBytes());
-            os.close();
-            System.out.println("Output stream closed?");
+            t.getResponseBody().write(response.getBytes());
         } catch (IOException e) {
             System.out.println(e);
+
         } finally {
+            t.getResponseBody().close();
             observer.resetGameState();
         }
 
-    }
-
+    } /* Placeholder for game logic that will update Observable's state
+       */
     public void updateObservable() {
         Long ms = System.currentTimeMillis();
         String mString = ms.toString();
         stateObservable.setGameState(mString);
     }
-
+    /* Called by scheduler thread to push client commands to game
+     */
     public void bufferToGame() {
         updateObservable();
         inputBuffer.flush();
 
     }
-
+    /* Thread run by main to push commands to game
+     */
     @Override
     public void run() {
         long then = System.currentTimeMillis();
