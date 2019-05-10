@@ -10,17 +10,18 @@ public class Game {
 
     Entities entities;
     LevelOne levelOne;
-    Collisions collisions;
+   /* Collisions collisions; */
 
-    protected void mainLoop(Game game){ // Game loop, calculates when to call update()
-        entities = new Entities(game);
-        levelOne = new LevelOne(game);
-        collisions = new Collisions(game);
+    protected void Game(){ // Game loop, calculates when to call update()
+        entities = new Entities(this);
+        levelOne = new LevelOne(this);
+     /*   collisions = new Collisions(this); */
 
         exitGame = false;
         Vessel.nextVesselID = 0;
     }
 
+    /*
     private void update() { // Call functions to update game here. This is called once every frame
         entities.runRoutines();
         collisions.runAllCollisions();
@@ -30,4 +31,6 @@ public class Game {
         levelOne.updateTime(timeStamp);
         levelOne.checkReleases();
     }
+
+     */
 }

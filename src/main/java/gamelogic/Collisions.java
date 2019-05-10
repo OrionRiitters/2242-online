@@ -1,3 +1,5 @@
+
+/*
 package gamelogic;
 
 import java.util.ArrayList;
@@ -83,3 +85,4 @@ public class Collisions {
     }
 
 }
+ */

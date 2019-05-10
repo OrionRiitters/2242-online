@@ -25,7 +25,7 @@ public class LevelOne {
     protected void updateTime(long timeStamp) {
         levelTime = timeStamp - timeDifference;
     }
-
+/*
     protected void checkReleases() { // After x amount of milliseconds, release next wave of enemies
         if (levelTime > enemyReleaseTimes[nextRelease]) {
             switch(nextRelease) {
@@ -107,4 +107,7 @@ public class LevelOne {
 
     }
 
+
+
+ */
 }

@@ -1,5 +1,9 @@
 package gamelogic;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 public class PlayerVessel extends Vessel {
 
     private boolean keyLeft;
@@ -10,11 +14,13 @@ public class PlayerVessel extends Vessel {
     final int PROJECTILE_SPACING = 10;
     private int projectileAccum = 0;
     private int maxHealth;
+    public int playerID;
+    public HashMap<String, Boolean> commands;
 
     Game game;
     Entities entities;
 
-    public PlayerVessel(int minX, int minY, int speed, int collideDamage, int health,
+    public PlayerVessel( int playerID, int minX, int minY, int speed, int collideDamage, int health,
                          boolean active, Game game, boolean friendly, String direction, int height,
                         int width) {
 
@@ -22,6 +28,7 @@ public class PlayerVessel extends Vessel {
 
         this.game = game;
         maxHealth = health;
+        this.playerID = playerID;
 
         entities = game.entities;
         keyLeft = false;
@@ -29,33 +36,10 @@ public class PlayerVessel extends Vessel {
         keyUp = false;
         keyDown = false;
         keySpace = false;
-
     }
 
 
-    public void setProjectileAccum(int i) {
-        projectileAccum = i;
-    }
 
-    public void setKeyLeft(boolean keyLeft) {
-        this.keyLeft = keyLeft;
-    }
-
-    public void setKeyRight(boolean keyRight) {
-        this.keyRight = keyRight;
-    }
-
-    public void setKeyUp(boolean keyUp) {
-        this.keyUp = keyUp;
-    }
-
-    public void setKeyDown(boolean keyDown) {
-        this.keyDown = keyDown;
-    }
-
-    public void setKeySpace(boolean keySpace) {
-        this.keySpace = keySpace;
-    }
 
     public boolean isKeyLeft() {
         return keyLeft;
@@ -77,7 +61,19 @@ public class PlayerVessel extends Vessel {
         return keySpace;
     }
 
-    @Override
+
+    /* The boolean values of 'commands' will be used in routine() to update this object's state.
+     * 'ce' is space (it was easier to write the key listeners in index.html by using this name for space).
+     */
+    protected void setCommands(JSONObject json) {
+        commands.put("W", json.getBoolean("W"));
+        commands.put("A", json.getBoolean("A"));
+        commands.put("S", json.getBoolean("S"));
+        commands.put("D", json.getBoolean("D"));
+        commands.put("space", json.getBoolean("ce"));
+    }
+
+    /* @Override
     protected void routine() { // Move direction based on keys pressed and player's position relative to the
         // frame
 
@@ -95,18 +91,19 @@ public class PlayerVessel extends Vessel {
 
     }
 
+
+     */
+
     @Override
     protected void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
 
         entities.addProjectileToList(new Projectile(getMinX(), getMinY() + 9, 4,
                 5, true, getVesselID(), game, true,
-                Movement.N, false) {
+                Movement.N, 34, 23, false) {
 
             @Override
             public void routine() {
-
                 Movement.moveN(this, getSpeed());
-
             }
 
             @Override
@@ -121,7 +118,7 @@ public class PlayerVessel extends Vessel {
         });
         entities.addProjectileToList(new Projectile(getMinX() + 28, getMinY() + 9,4,
                 5, true, getVesselID(), game, true,
-                Movement.N, false) {
+                Movement.N, 54, 76, false) {
 
             @Override
             public void routine() {
