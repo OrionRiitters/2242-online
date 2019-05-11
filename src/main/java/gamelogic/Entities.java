@@ -17,12 +17,21 @@ public class Entities {
     protected void addVesselToList(Vessel v) {
         vesselList.add(v);
     }
-    protected void addPlayerVesselToLIst(PlayerVessel pv) { playerVesselList.add(pv); };
+    protected void addPlayerVesselToList(PlayerVessel pv) { playerVesselList.add(pv); };
     protected void addProjectileToList(Projectile p) {
         projectileList.add(p);
     }
 
     protected ArrayList<PlayerVessel> getPlayerVesselList() { return playerVesselList; };
+
+    protected PlayerVessel getPlayerVessel(int id) {
+        for (PlayerVessel pv : playerVesselList) {
+            if (pv.getPlayerID() == id) {
+                return pv;
+            }
+        }
+        return null;
+    }
 
   /*  protected void purgeProjectiles() {
         ArrayList<Projectile> projectileListBuffer = new ArrayList<Projectile>();
@@ -57,13 +66,11 @@ public class Entities {
     }
 
     protected void runRoutines() {  // Runs routines of all entities
-        for (Vessel v : vesselList) {
-            v.routine();
+
+        for (PlayerVessel pv : playerVesselList) {
+            pv.routine();
         }
 
-        for (Projectile p : projectileList) {
-            p.routine();
-        }
     }
 
 

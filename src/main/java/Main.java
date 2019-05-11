@@ -8,6 +8,7 @@ public class Main {
         server.start();
 
         Scheduler scheduler = Scheduler.get_instance();
+        scheduler.initializeGame();
         scheduler.run();
 
     }

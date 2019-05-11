@@ -17,7 +17,7 @@ public abstract class Entity { // This abstract class will contain Vessel and Pr
         this.minX = minX;
         this.minY = minY;
         this.maxX = minX + width;
-        this.maxY = minY + height;
+        this.maxY = minY - height;
         this.collideDamage = collideDamage;
         this.active = active;
         this.speed = speed;

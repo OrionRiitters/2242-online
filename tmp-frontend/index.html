@@ -47,14 +47,14 @@
             keys.ping = Date.now()
            axios.post("/cmd", keys)
                 .then(res => {
-                    console.log(res.data.ping)
+                    console.log(res.data)
                     console.log(Date.now())
                     console.log("\n")
                 })
 
            if (keys.ce) return;
            loop()
-       }, 200)
+       }, 20)
    }
 
    loop()

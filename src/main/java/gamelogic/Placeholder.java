@@ -17,12 +17,17 @@ public class Placeholder {
         StateObservable stateObservable = StateObservable.get_instance();
 
         for (String s : buffer) {
-
-            
             if (s != null) {
-                updatePlayerState(s);
-                HashMap<String, Boolean> commands =
-                stateObservable.setGameState(commands == null ? null : commands.toString());
+                JSONObject json = new JSONObject(s);
+                PlayerVessel pv = game.entities.getPlayerVessel(json.getInt("id"));
+
+                updatePlayerState(json, pv);
+                game.entities.runRoutines();
+                String pos = "";
+                for (int i : pv.getPosition()) {
+                    pos += (i + " ");
+                }
+                stateObservable.setGameState(pos);
             }
         }
 
@@ -35,17 +40,7 @@ public class Placeholder {
 
     /* Documentation for org.json can be found at http://stleary.github.io/JSON-java/index.html
      */
-    private static void updatePlayerState(String s) {
-
-        JSONObject json = new JSONObject(s);
-        ArrayList<PlayerVessel> players = game.entities.getPlayerVesselList();
-
-        for (PlayerVessel pv : players) {
-            if (pv.getVesselID() == json.getDouble("id")) {
-                pv.setCommands(json);
-
-            }
-        }
-
+    private static void updatePlayerState(JSONObject json, PlayerVessel pv) {
+        pv.setCommands(json);
     }
 }
