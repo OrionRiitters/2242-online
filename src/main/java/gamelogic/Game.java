@@ -2,6 +2,7 @@ package gamelogic;
 
 import java.awt.event.WindowEvent;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
 public class Game {
@@ -9,10 +10,13 @@ public class Game {
     final public int FRAME_WIDTH = 640;
     final public int FRAME_HEIGHT = 480;
 
+    protected Integer[] players = new Integer[4];
+
     public static boolean exitGame = false;
 
     Entities entities;
     LevelOne levelOne;
+
    /* Collisions collisions; */
 
     public Game(){ // Game loop, calculates when to call update()
@@ -26,6 +30,12 @@ public class Game {
         Vessel.nextVesselID = 0;
     }
 
+    /* Adds all entity states to an ArrayList and returns it.
+     */
+    public ArrayList<Integer[]> getGameState() {
+        return entities.getPlayerVesselStates();
+    }
+
     protected void addPlayer(int id) {
         PlayerVessel pv = new PlayerVessel(
                 id, 1, 1, 1, 1, 1, true,
@@ -33,6 +43,14 @@ public class Game {
         );
         entities.addPlayerVesselToList(pv);
 
+    }
+
+    public Integer[] getPlayers() {
+        return players;
+    }
+
+    public ArrayList<PlayerVessel> getPlayerVessels() {
+        return entities.getPlayerVesselList();
     }
 
     /*
