@@ -30,7 +30,7 @@ public class Entities {
 
     protected ArrayList<PlayerVessel> getPlayerVesselList() { return playerVesselList; };
 
-    /* This returns the "state" of player vessels. The states consist of all that is needed
+    /* This returns the "state" of player vessels. The states consist of what is needed
      * for the client to render a graphic for each player vessel (ID, minX and minY)
      */
     protected ArrayList<Integer[]> getPlayerVesselStates() {

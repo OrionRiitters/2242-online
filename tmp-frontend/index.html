@@ -17,7 +17,7 @@
   <script>
 
    let keys = {
-       id: 1,
+       id: false,
        A: false,
        W: false,
        D: false,
@@ -42,22 +42,40 @@
        });
    });
 
+   let authSent = false;
+
+   function auth() {
+       $(document).on("keyup", event => {
+           if (event.code.slice(3, event.code.length) == "U" && !auth) {
+               axios.get("/auth").then(res => {
+                   keys.id = res.data.id
+                   authSent = true;
+                   console.log("Shit!")
+               }).catch(err => {console.log(err)});
+           }
+       })
+       if (keys.id != false) {
+           loop()
+       }
+   }
+
    function loop() {
        setTimeout(() => {
-            keys.ping = Date.now()
+           keys.ping = Date.now()
            axios.post("/cmd", keys)
-                .then(res => {
-                    console.log(res.data)
-                    console.log(Date.now())
-                    console.log("\n")
-                })
+                           .then(res => {
+                               console.log(res.data)
+                               console.log(Date.now())
+                               console.log("\n")
+                           })
 
            if (keys.ce) return;
            loop()
        }, 20)
    }
+   auth()
 
-   loop()
+
 
   </script>
 </html>

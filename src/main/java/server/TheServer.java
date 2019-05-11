@@ -19,13 +19,13 @@ public class TheServer extends Thread {
             HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 4);
             server.createContext("/cmd", new CmdHandler());
             server.createContext("/", new BaseHandler());
+            server.createContext("/auth", new AuthHandler());
             server.setExecutor(Executors.newFixedThreadPool(4));
             server.start();
             System.out.println("Server started on port " + PORT + "..");
         } catch (IOException e) {
             System.out.println(e);
         }
-
     }
 
     public static String readStream(InputStream is) throws IOException{
@@ -41,8 +41,6 @@ public class TheServer extends Thread {
         }
         return stringBuilder.toString();
     }
-
-
 
     public static String loadStatic() throws Exception {
         File file = new File("/home/orion/IdeaProjects/2242-online/tmp-frontend/index.html");

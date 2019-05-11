@@ -3,11 +3,8 @@ package statemanager;
 
 import server.TheServer;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class InputBuffer {
@@ -17,7 +14,7 @@ public class InputBuffer {
     private int bufferSlot = 0;
 
     /* This class implements the singleton design pattern
-    */
+     */
     public static InputBuffer get_instance() {
 
         if (_instance == null) {
@@ -35,7 +32,6 @@ public class InputBuffer {
         return slot;
     }
 
-
     /* Insert string into buffer. Return slot that string was inserted into.
      */
     private int push(String s) {
@@ -50,7 +46,7 @@ public class InputBuffer {
     }
 
     /* Empty buffer for next round of input.
-    */
+     */
     protected void flush() {
         Arrays.fill(buffer, null);
         bufferSlot = 0;

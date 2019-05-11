@@ -18,23 +18,30 @@ public class Placeholder {
                 JSONObject json = new JSONObject(s);
                 int playerID = json.getInt("id");
 
-                PlayerVessel pv = game.entities.getPlayerVessel(playerID);
+                PlayerVessel pv;
+                if (game.entities.getPlayerVessel(playerID) == null) {
+                    game.addPlayer(playerID);
+                }
+                pv = game.entities.getPlayerVessel(playerID);
 
                 updatePlayer(json, pv);
                 addPlayerID(pv.getPlayerID());
-                updateGameState();
             }
         }
+        updateGameState();
     }
 
+    /* This
+     */
     private static void updateGameState() {
         StateObservable stateObservable = StateObservable.get_instance();
-        game.entities.runRoutines();
-
         Integer[] players = game.getPlayers();
+
+        game.entities.runRoutines();
 
         String state = writeStateJSON(game.getGameState());
 
+        stateObservable.setPlayers(players);
         stateObservable.setGameState(state);
         if (stateObservable.getGameState() == null) {
             stateObservable.setGameState("Game state failed to set.");
@@ -49,13 +56,11 @@ public class Placeholder {
         JSONWriter outerWriter = new JSONWriter(outerString).array();
 
         for (Integer[] a : state) {
-          //  StringBuilder innerString = new StringBuilder();
             JSONWriter innerWriter = outerWriter.array();
             for (Integer i : a) {
                 innerWriter.value(i);
             }
             innerWriter.endArray();
-
         }
         outerWriter.endArray();
         return outerString.toString();
@@ -65,9 +70,6 @@ public class Placeholder {
         game.players[id] = id;
     }
 
-
-    /* Documentation for org.json can be found at http://stleary.github.io/JSON-java/index.html
-     */
     private static void updatePlayer(JSONObject json, PlayerVessel pv) {
         pv.setCommands(json);
     }

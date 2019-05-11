@@ -22,8 +22,6 @@ public class Game {
     public Game(){ // Game loop, calculates when to call update()
         entities = new Entities(this);
         levelOne = new LevelOne(this);
-
-        addPlayer(1);
      /*   collisions = new Collisions(this); */
 
         exitGame = false;
@@ -53,7 +51,10 @@ public class Game {
         return entities.getPlayerVesselList();
     }
 
+
     /*
+    KEEP FOR REFERENCE
+
     private void update() { // Call functions to update game here. This is called once every frame
         entities.runRoutines();
         collisions.runAllCollisions();
