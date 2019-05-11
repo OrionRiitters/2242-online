@@ -6,29 +6,56 @@ public class Entities {
 
     Game game;
 
+    /* Creates Arraylists of all entities. They are separated into 3 different subclass lists.
+    */
     public ArrayList<Vessel> vesselList = new ArrayList<Vessel>(); // Lists to contain all entities
     public ArrayList<Projectile> projectileList = new ArrayList<Projectile>();
-
+    private ArrayList<PlayerVessel> playerVesselList = new ArrayList<>();
 
     public Entities(Game game) {
         this.game = game;
     }
 
-    public PlayerVessel getPlayerVessel() {
-        return (PlayerVessel) vesselList.get(0);
-    }
-
-
     protected void addVesselToList(Vessel v) {
         vesselList.add(v);
+    }
+
+    protected void addPlayerVesselToList(PlayerVessel pv) {
+        playerVesselList.add(pv);
     }
 
     protected void addProjectileToList(Projectile p) {
         projectileList.add(p);
     }
 
-    protected void purgeProjectiles() {
+    protected ArrayList<PlayerVessel> getPlayerVesselList() { return playerVesselList; };
 
+    /* This returns the "state" of player vessels. The states consist of what is needed
+     * for the client to render a graphic for each player vessel (ID, minX and minY)
+     */
+    protected ArrayList<Integer[]> getPlayerVesselStates() {
+        ArrayList<Integer[]> vesselStates = new ArrayList<>();
+
+        for (PlayerVessel pv : playerVesselList) {
+            Integer[] state = new Integer[3];
+            state[0] = pv.getPlayerID();
+            state[1] = pv.getMinX();
+            state[2] = pv.getMinY();
+            vesselStates.add(state);
+        }
+        return vesselStates;
+    }
+
+    protected PlayerVessel getPlayerVessel(int id) {
+        for (PlayerVessel pv : playerVesselList) {
+            if (pv.getPlayerID() == id) {
+                return pv;
+            }
+        }
+        return null;
+    }
+
+  /*  protected void purgeProjectiles() {
         ArrayList<Projectile> projectileListBuffer = new ArrayList<Projectile>();
         ArrayList<Projectile> projectileListCopy = new ArrayList<Projectile>(projectileList); // Used for projectileList.removeAll() function later.
 
@@ -42,8 +69,7 @@ public class Entities {
         }
         projectileList.removeAll(projectileListCopy);              // remove contents of projectileList,
         projectileList.addAll(projectileListBuffer);        // add contents of bufferList to projectileList.
-    }
-
+    } */
 
     protected void purgeVessels() {  // This does the same thing as purgeProjectiles, but purges vessels and
         // only checks each vessels 'active' attribute, and not if it is OOB
@@ -61,19 +87,16 @@ public class Entities {
         vesselList.addAll(vesselListBuffer);
     }
 
-
     protected void runRoutines() {  // Runs routines of all entities
-        for (Vessel v : vesselList) {
-            v.routine();
+
+        for (PlayerVessel pv : playerVesselList) {
+            pv.routine();
         }
 
-        for (Projectile p : projectileList) {
-            p.routine();
-        }
     }
 
 
-    protected void createEnemy1(int minX, int minY) {  // Creates anonymous subclass of vessel
+  /*  protected void createEnemy1(int minX, int minY) {  // Creates anonymous subclass of vessel
 
         addVesselToList(new Vessel(minX, minY,2, 20,
                 50, true, false, Movement.E) {
@@ -541,5 +564,5 @@ public class Entities {
         });
     }
 
-
+ */
 }

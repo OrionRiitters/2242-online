@@ -8,6 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Observer;
 
+import gamelogic.Game;
+
 public class Scheduler extends Thread {
 
     /* Observer interface must be decoupled from Scheduler because
@@ -18,6 +20,7 @@ public class Scheduler extends Thread {
     private InputBuffer inputBuffer = InputBuffer.get_instance();
     private StateObservable stateObservable = StateObservable.get_instance();
     private StateObserver[] observers = new StateObserver[4];
+    private Game gameInstance;
 
     /* This class implements the singleton design pattern
      */
@@ -54,7 +57,7 @@ public class Scheduler extends Thread {
          */
         while (observer.getGameState() == null) {
             long now = System.currentTimeMillis();
-            if (now - then > 200) break;
+            if (now - then > 20) break;
         }
 
         /* Set response to something else when gameState update times out
@@ -77,6 +80,11 @@ public class Scheduler extends Thread {
         Placeholder.consumeBuffer(inputBuffer.getBuffer());
         inputBuffer.flush();
     }
+
+    public void initializeGame() {
+        gameInstance = new Game();
+    }
+
     /* Thread run by main to push commands to gamelogic
      */
     @Override
@@ -85,7 +93,7 @@ public class Scheduler extends Thread {
         long now = System.currentTimeMillis();
 
         while(true) {
-            while(now - then < 200) {
+            while(now - then < 20) {
                 now = System.currentTimeMillis();
             }
             then = now;

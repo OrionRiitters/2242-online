@@ -8,9 +8,9 @@ import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executors;
 
-public class TheServer extends Thread {
+public class TheServer2 extends Thread {
 
-    private static final int PORT = 8000;
+    private static final int PORT = 8001;
 
     @Override
     public void run() {

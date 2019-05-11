@@ -15,7 +15,7 @@ public class BaseHandler implements HttpHandler {
         InputStream is = t.getRequestBody();
 
         try {
-            response = loadStatic();
+            response = TheServer.loadStatic();
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -25,17 +25,4 @@ public class BaseHandler implements HttpHandler {
         os.close();
 
     }
-
-    public String loadStatic() throws Exception {
-        File file = new File("/home/orion/IdeaProjects/2242-online/tmp-frontend/index.html");
-        try (
-            FileInputStream fis = new FileInputStream(file);
-        ) {
-            byte[] data = new byte[(int) file.length()];
-            fis.read(data);
-
-            return new String(data, "UTF-8");
-        }
-    }
-
 }

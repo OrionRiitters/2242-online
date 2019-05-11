@@ -10,7 +10,7 @@ public class Projectile extends Entity {
     Game game;
     Entities entities;
 
-    public Projectile(int minX, int minY, int speed, int collideDamage, BufferedImage sprite,
+    public Projectile(int minX, int minY, int speed, int collideDamage,
                       boolean active, int vesselID, Game game, boolean friendly, String direction,
                       int height, int width, boolean alwaysActive) {
 
@@ -34,9 +34,7 @@ public class Projectile extends Entity {
     protected void collide(Vessel v) {
 
         v.setHealth(v.getHealth() - getCollideDamage());
-        if (v.getHealth() <= 0 && v.getVesselID() == 0) {
-            Game.exitGame = true;
-        } else if (v.getHealth() <= 0 && v.getVesselID() != 0){v.setActive(false);}
+        if (v.getHealth() <= 0 && v.getVesselID() != 0){ v.setActive(false); }
     }
 
 
