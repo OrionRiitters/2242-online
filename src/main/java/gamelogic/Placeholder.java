@@ -16,7 +16,8 @@ public class Placeholder {
         for (String s : buffer) {
             if (s != null) {
                 JSONObject json = new JSONObject(s);
-                int playerID = json.getInt("id");
+                System.out.println(s);
+                int playerID = (json.getInt("id"));
 
                 PlayerVessel pv;
                 if (game.entities.getPlayerVessel(playerID) == null) {

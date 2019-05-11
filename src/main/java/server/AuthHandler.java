@@ -2,7 +2,7 @@ package server;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.json.JSONObject;
+import org.json.JSONWriter;
 import statemanager.StateObservable;
 
 import java.io.IOException;
@@ -20,11 +20,15 @@ public class AuthHandler implements HttpHandler {
 
         //JSONObject json = new JSONObject(reqBody);
 
-
+        Integer accum = 0;
         for (Integer i : stateObservable.getPlayers()) {
-            Integer accum = 0;
             if (i == null) {
-                response = "{id: " + accum.toString() + "}";
+                StringBuilder string = new StringBuilder();
+                JSONWriter writer = new JSONWriter(string).object();
+                writer.key("id").value(accum).endObject();
+
+                response = string.toString();
+                break;
             }
             accum++;
         }

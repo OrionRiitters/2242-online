@@ -46,17 +46,17 @@
 
    function auth() {
        $(document).on("keyup", event => {
-           if (event.code.slice(3, event.code.length) == "U" && !auth) {
+           if (event.code.slice(3, event.code.length) == "U") {
                axios.get("/auth").then(res => {
                    keys.id = res.data.id
                    authSent = true;
-                   console.log("Shit!")
+                   if (keys.id == 0 || keys.id == 1) {
+                       loop()
+                   }
                }).catch(err => {console.log(err)});
            }
        })
-       if (keys.id != false) {
-           loop()
-       }
+
    }
 
    function loop() {
@@ -64,9 +64,8 @@
            keys.ping = Date.now()
            axios.post("/cmd", keys)
                            .then(res => {
-                               console.log(res.data)
-                               console.log(Date.now())
-                               console.log("\n")
+                               console.log(res.data[0][1] + "--" +  res.data[0][2])
+                               console.log(res.data[1][1] + "--" + res.data[1][2])
                            })
 
            if (keys.ce) return;
@@ -74,6 +73,8 @@
        }, 20)
    }
    auth()
+
+
 
 
 
