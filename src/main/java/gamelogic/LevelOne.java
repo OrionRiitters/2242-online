@@ -25,7 +25,7 @@ public class LevelOne {
     protected void updateTime(long timeStamp) {
         levelTime = timeStamp - timeDifference;
     }
-/*
+
     protected void checkReleases() { // After x amount of milliseconds, release next wave of enemies
         if (levelTime > enemyReleaseTimes[nextRelease]) {
             switch(nextRelease) {
@@ -69,10 +69,10 @@ public class LevelOne {
         entities.createEnemy2(-30, 20);
         entities.createEnemy2(-500, 50);
 
-        entities.createEnemy2(gui.FRAME_WIDTH + 1200, 20);
-        entities.createEnemy2(gui.FRAME_WIDTH + 1300, 50);
-        entities.createEnemy2(gui.FRAME_WIDTH + 1450, 20);
-        entities.createEnemy2(gui.FRAME_WIDTH + 1550, 50);
+        entities.createEnemy2(game.FRAME_WIDTH + 1200, 20);
+        entities.createEnemy2(game.FRAME_WIDTH + 1300, 50);
+        entities.createEnemy2(game.FRAME_WIDTH + 1450, 20);
+        entities.createEnemy2(game.FRAME_WIDTH + 1550, 50);
 
     }
 
@@ -81,33 +81,29 @@ public class LevelOne {
         entities.createEnemy1(-30, 20);
         entities.createEnemy2(-100, 40);
         entities.createEnemy3(-500, 60);
-        entities.createEnemy3(gui.FRAME_WIDTH + 500, 10);
+        entities.createEnemy3(game.FRAME_WIDTH + 500, 10);
 
     }
 
     private void fourthRelease() {
 
         entities.createEnemy1(-33, 24);
-        entities.createEnemy1(gui.FRAME_WIDTH + 300, 50);
+        entities.createEnemy1(game.FRAME_WIDTH + 300, 50);
         entities.createEnemy1(-80, 80);
-        entities.createEnemy1(gui.FRAME_WIDTH + 300, 20);
+        entities.createEnemy1(game.FRAME_WIDTH + 300, 20);
         entities.createEnemy1(-140, 50);
         entities.createEnemy1(-170, 10);
 
         entities.createEnemy1(-30, 20);
         entities.createEnemy2(-100, 40);
         entities.createEnemy3(-500, 60);
-        entities.createEnemy3(gui.FRAME_WIDTH + 500, 10);
+        entities.createEnemy3(game.FRAME_WIDTH + 500, 10);
 
     }
 
     private void fifthRelease() {
 
-        entities.createBoss1(gui.FRAME_WIDTH / 2, -100);
+        entities.createBoss1(game.FRAME_WIDTH / 2, -100);
 
     }
-
-
-
- */
 }

@@ -3,18 +3,24 @@ package gamelogic;
 public class Vessel extends Entity {
 
     private int health;
+    int playerID;
     private int vesselID;
     public static int nextVesselID = 0;
 
     public Vessel(int minX, int minY, int speed, int collideDamage, int health,
-                   boolean active, boolean friendly, String direction, int height, int width) {
+                   boolean active, String direction, int height, int width, int playerID) {
 
-        super(minX, minY, speed, collideDamage, active, friendly, direction, height, width);
+        super(minX, minY, speed, collideDamage, active, direction, height, width);
 
+        this.playerID = playerID;
         this.health = health;
         vesselID = nextVesselID; // vesselID's will be used to associate vessels with their projectiles
         nextVesselID++;
     }
+
+    public int getPlayerID() { return playerID; }
+
+    public boolean isPlayer() { return false; }
 
     public int getVesselID() { return vesselID; }
 

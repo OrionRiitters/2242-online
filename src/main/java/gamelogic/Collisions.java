@@ -1,5 +1,5 @@
 
-/*
+
 package gamelogic;
 
 import java.util.ArrayList;
@@ -16,19 +16,25 @@ public class Collisions {
         entities = game.entities;
     }
     public void runAllCollisions() {
-        Vessel playerVessel = entities.getPlayerVessel();  // This runs collisions between playerVessel and
-        // vessels as well as between vessels and friendly projectiles
-        for (int i = 1 ; i < entities.vesselList.size() ; i++) {
-            if (checkCollision(playerVessel, entities.vesselList.get(i))) {
-                bounce(playerVessel, entities.vesselList.get(i));
-                entities.vesselList.get(i).collide(playerVessel);
-                playerVessel.collide(entities.vesselList.get(i));
+        ArrayList<Vessel> vl = entities.getVesselList();
+
+        for (int i = 0 ; i < vl.size() ; i++) {
+            Vessel vessel = vl.get(i);
+
+            for (int k = i ; k < vl.size(); k++) {
+                if (checkCollision(vessel, vl.get(k)) && vessel.getVesselID() != vl.get(k).getVesselID()) {
+                    bounce(vessel, vl.get(k));
+                    vl.get(k).collide(vessel);
+                    vessel.collide(vl.get(k));
+                }
             }
 
+            ArrayList<Projectile> pl = entities.projectileList;
 
-            for (Projectile p : entities.projectileList) {
-                if (checkCollision(entities.vesselList.get(i), p) && p.isFriendly()) {
-                    p.collide(entities.vesselList.get(i));
+            for (Projectile p : pl) {
+
+                if (checkCollision(vessel, p) && p.getVesselID() != vessel.getVesselID()) {
+                    p.collide(vl.get(i));
                     p.setActive(false);
                 }
             }
@@ -36,7 +42,7 @@ public class Collisions {
 
     }
     // This method checks collisions between playerVessel and all unfriendly projectiles
-    public void runPlayerToProjectileCollisions(Vessel vessel, ArrayList<Projectile> projectileList ) {
+ /*   public void runPlayerToProjectileCollisions(Vessel vessel, ArrayList<Projectile> projectileList ) {
 
         for (int i = 0 ; i < entities.projectileList.size() ; i++) {
             Projectile projectile = projectileList.get(i);
@@ -46,10 +52,12 @@ public class Collisions {
             }
         }
 
-    }
+    }*/
 
 
     public boolean checkCollision(Entity e1, Entity e2) { // Check if two entities are colliding
+       // System.out.println(e1.getMinX() + "-" + e1.getMaxX() + "-" + e1.getMinY() + "-" + e1.getMaxY());
+       // System.out.println(e2.getMinX() + "-" + e2.getMaxX() + "-" + e2.getMinY() + "-" + e2.getMaxY());
         return ((e1.getMaxX() >= e2.getMinX() && e1.getMaxY() >= e2.getMinY()) &&
                 (e1.getMinX() <= e2.getMaxX() && e1.getMinY() <= e2.getMaxY()));
     }
@@ -85,4 +93,3 @@ public class Collisions {
     }
 
 }
- */

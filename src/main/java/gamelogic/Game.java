@@ -18,12 +18,12 @@ public class Game {
     Entities entities;
     LevelOne levelOne;
 
-   /* Collisions collisions; */
+   Collisions collisions;
 
     public Game(){ // Game loop, calculates when to call update()
         entities = new Entities(this);
         levelOne = new LevelOne(this);
-     /*   collisions = new Collisions(this); */
+        collisions = new Collisions(this);
 
         exitGame = false;
         Vessel.nextVesselID = 0;
@@ -33,7 +33,20 @@ public class Game {
      */
     public ArrayList<Integer[]> getGameState() {
 
-        return entities.getPlayerVesselStates();
+        ArrayList<Integer[]> allStates = new ArrayList<>();
+        allStates.addAll(entities.getVesselStates());
+        allStates.addAll(entities.getProjectileStates());
+        return allStates;
+
+    }
+
+    protected void updateState() {
+        entities.runRoutines();
+        entities.purgeProjectiles();
+        collisions.runAllCollisions();
+        entities.purgeVessels();
+        levelOne.updateTime(System.currentTimeMillis());
+        levelOne.checkReleases();
     }
 
     protected int getFrame() {
@@ -43,9 +56,10 @@ public class Game {
 
     protected void addPlayer(int id) {
         PlayerVessel pv = new PlayerVessel(
-                id, 1, 1, 3, 1, 1, true,
-                this, true, "N", 4, 5
+                 1, 1, 3, 1, 1, true,
+                this, "N", 42, 33, id
         );
+        entities.addVesselToList(pv);
         entities.addPlayerVesselToList(pv);
 
     }

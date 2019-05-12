@@ -37,12 +37,12 @@ public class Placeholder {
         StateObservable stateObservable = StateObservable.get_instance();
         Integer[] players = game.getPlayers();
 
-        game.entities.runRoutines();
+        game.updateState();
 
         String state = writeStateJSON(game.getGameState());
-
         stateObservable.setPlayers(players);
         stateObservable.setGameState(state);
+
         if (stateObservable.getGameState() == null) {
             stateObservable.setGameState("Game state failed to set.");
         }

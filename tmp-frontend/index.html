@@ -44,8 +44,8 @@
 
    function renderCanvas(state) {
 
-       console.log(state[0].frame)
-       console.log(state[1][1] + " - " + state[1][2])
+       //console.log(state[0].frame)
+       //console.log(state[1][1] + " - " + state[1][2])
 
        let c = document.getElementById("gameCanvas");
        let ctx = c.getContext("2d");
@@ -133,17 +133,18 @@
 
            axios.post("/cmd", keys)
                 .then(res => {
+                    console.log(res.data)
                         if (res.data != "Observer timeout") {
                             frameBuffer.push(res.data)
 
                             quickSort(frameBuffer, 0, frameBuffer.length -1)
 
                         } else { console.log("Observer timeout") }
-                    if (frameBuffer.length > 6) {
+                    if (frameBuffer.length > 4) {
                             renderCanvas(frameBuffer.shift())
                         }
                 })
-                    if (keys.ce) return;
+                    if (keys.Q) return;
                     loop()
        }, 16)
    }
@@ -196,4 +197,11 @@
 
 
   </script>
+
+  <style>
+   .gameCanvas{
+       margin: 50;
+       paddin:50;
+   }
+  </style>
 </html>

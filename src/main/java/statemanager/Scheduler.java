@@ -96,7 +96,7 @@ public class Scheduler extends Thread {
             try {
                 this.sleep(15);
             } catch (InterruptedException exc) { System.out.println(exc); }
-            System.out.println(System.currentTimeMillis());
+          //  System.out.println(System.currentTimeMillis());
             bufferToGame();
 
         }

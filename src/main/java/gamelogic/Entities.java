@@ -30,17 +30,23 @@ public class Entities {
 
     protected ArrayList<PlayerVessel> getPlayerVesselList() { return playerVesselList; };
 
+    protected ArrayList<Vessel> getVesselList() {
+        return vesselList;
+    };
+
+
     /* This returns the "state" of player vessels. The states consist of what is needed
      * for the client to render a graphic for each player vessel (ID, minX and minY)
      */
-    protected ArrayList<Integer[]> getPlayerVesselStates() {
+    protected ArrayList<Integer[]> getVesselStates() {
         ArrayList<Integer[]> vesselStates = new ArrayList<>();
 
-        for (PlayerVessel pv : playerVesselList) {
+        for (Vessel v : vesselList) {
             Integer[] state = new Integer[3];
-            state[0] = pv.getPlayerID();
-            state[1] = pv.getMinX();
-            state[2] = pv.getMinY();
+
+            state[0] = v.getPlayerID();
+            state[1] = v.getMinX();
+            state[2] = v.getMinY();
             vesselStates.add(state);
         }
         return vesselStates;
@@ -55,13 +61,27 @@ public class Entities {
         return null;
     }
 
-  /*  protected void purgeProjectiles() {
+    protected ArrayList<Integer[]> getProjectileStates() {
+        ArrayList<Integer[]> projectileStates = new ArrayList<>();
+
+        for (Projectile p: projectileList) {
+            Integer[] state = new Integer[3];
+            state[0] = p.getProjectileID();
+            state[1] = p.getMinX();
+            state[2] = p.getMinY();
+            projectileStates.add(state);
+        }
+        return projectileStates;
+
+    }
+
+   protected void purgeProjectiles() {
         ArrayList<Projectile> projectileListBuffer = new ArrayList<Projectile>();
         ArrayList<Projectile> projectileListCopy = new ArrayList<Projectile>(projectileList); // Used for projectileList.removeAll() function later.
 
         for (Projectile p : projectileList) {
-            if (!((p.getMaxX() < 0 || p.getMinX() > game.gui.FRAME_WIDTH) || (p.getMaxY() < 0 || // If out of bounds,
-                    p.getMinY() > game.gui.FRAME_HEIGHT)) && p.getActive()) { // or if inactive,
+            if (!((p.getMaxX() < 0 || p.getMinX() > game.FRAME_WIDTH) || (p.getMaxY() < 0 || // If out of bounds,
+                    p.getMinY() > game.FRAME_HEIGHT)) && p.getActive()) { // or if inactive,
 
                 p.setProjectileIndex(projectileListBuffer.size());     // reset projectile's index,
                 projectileListBuffer.add(p);                          // add projectile to bufferList,
@@ -69,7 +89,7 @@ public class Entities {
         }
         projectileList.removeAll(projectileListCopy);              // remove contents of projectileList,
         projectileList.addAll(projectileListBuffer);        // add contents of bufferList to projectileList.
-    } */
+    }
 
     protected void purgeVessels() {  // This does the same thing as purgeProjectiles, but purges vessels and
         // only checks each vessels 'active' attribute, and not if it is OOB
@@ -89,21 +109,26 @@ public class Entities {
 
     protected void runRoutines() {  // Runs routines of all entities
 
-        for (PlayerVessel pv : playerVesselList) {
-            pv.routine();
+        for (Vessel v : vesselList) {
+            v.routine();
+        }
+        for (Projectile p : projectileList) {
+            p.routine();
         }
 
     }
 
 
-  /*  protected void createEnemy1(int minX, int minY) {  // Creates anonymous subclass of vessel
+    protected void createEnemy1(int minX, int minY) {  // Creates anonymous subclass of vessel
+
+        System.out.println("asdf");
 
         addVesselToList(new Vessel(minX, minY,2, 20,
-                50, true, false, Movement.E) {
+                50, true, Movement.E, 30, 36, 100) {
 
             //String direction = "right";
-            int frameWidth = game.gui.FRAME_WIDTH;
-            int frameHeight = game.gui.FRAME_HEIGHT;
+            int frameWidth = game.FRAME_WIDTH;
+            int frameHeight = game.FRAME_HEIGHT;
             int frame = 0;
 
 
@@ -145,8 +170,8 @@ public class Entities {
             protected void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
 
                 addProjectileToList(new Projectile(getMinX() + 14, getMaxY() - 5, 4,
-                        25, true, getVesselID(), game, false,
-                        Movement.N, false) {
+                        25, true, getVesselID(), 1001, game,
+                        Movement.N,  5, 5, false) {
 
                     @Override
                     public void routine() {
@@ -163,11 +188,11 @@ public class Entities {
     protected void createEnemy2(int minX, int minY) { // Creates anonymous subclass of vessel
 
         addVesselToList(new Vessel(minX, minY,2, 2,
-                75, true, false, Movement.E) {
+                75, true, Movement.E, 30, 36, 101) {
 
             //String direction = "right";
-            int frameWidth = game.gui.FRAME_WIDTH;
-            int frameHeight = game.gui.FRAME_HEIGHT;
+            int frameWidth = game.FRAME_WIDTH;
+            int frameHeight = game.FRAME_HEIGHT;
             int frame = 0;
 
 
@@ -211,8 +236,8 @@ public class Entities {
             protected void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
 
                 addProjectileToList(new Projectile(getMinX() + 14, getMaxY() - 5, 5,
-                        20, true, getVesselID(), game, false,
-                        Movement.S, false) {
+                        20, true, getVesselID(), 1001,  game,
+                        Movement.S, 5, 5, false) {
 
                     @Override
                     public void routine() {
@@ -222,8 +247,8 @@ public class Entities {
                 });
 
                 addProjectileToList(new Projectile(getMinX() + 20, getMaxY() - 5, 5,
-                        20, true, getVesselID(), game, false,
-                        Movement.S, false) {
+                        20, true, getVesselID(), 1001, game,
+                        Movement.S, 5, 5, false) {
 
                     @Override
                     public void routine() {
@@ -242,11 +267,11 @@ public class Entities {
     protected void createEnemy3(int minX, int minY) { // Creates anonymous subclass of vessel
 
         addVesselToList(new Vessel(minX, minY,1, 10,
-                75,true, false, Movement.E) {
+                75,true, Movement.E, 30, 36, 102) {
 
             //String direction = "right";
-            int frameWidth = game.gui.FRAME_WIDTH;
-            int frameHeight = game.gui.FRAME_HEIGHT;
+            int frameWidth = game.FRAME_WIDTH;
+            int frameHeight = game.FRAME_HEIGHT;
             int frame = 0;
 
 
@@ -288,8 +313,8 @@ public class Entities {
             protected void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
 
                 addProjectileToList(new Projectile(getMinX() + 10, getMinY(), 2,
-                        30, true, getVesselID(), game, false,
-                        Movement.N, false) {
+                        30, true, getVesselID(), 1001, game,
+                        Movement.N, 5, 5, false) {
 
                     @Override
                     public void routine() {
@@ -299,8 +324,8 @@ public class Entities {
                 });
 
                 addProjectileToList(new Projectile(getMaxX(), getMinY(), 2,
-                        30, true, getVesselID(), game, false,
-                        Movement.NE, false) {
+                        30, true, getVesselID(), 1001,  game,
+                        Movement.NE, 5, 5, false) {
 
                     @Override
                     public void routine() {
@@ -310,8 +335,8 @@ public class Entities {
                 });
 
                 addProjectileToList(new Projectile(getMaxX(), getMinY() + 10, 2,
-                        30, true, getVesselID(), game, false,
-                        Movement.E, false) {
+                        30, true, getVesselID(), 1001, game,
+                        Movement.E, 5, 5, false) {
 
                     @Override
                     public void routine() {
@@ -321,8 +346,8 @@ public class Entities {
                 });
 
                 addProjectileToList(new Projectile(getMaxX(), getMaxY(), 2,
-                        30, true, getVesselID(), game, false,
-                        Movement.SE, false) {
+                        30, true, getVesselID(), 1001, game,
+                        Movement.SE, 5, 5,false) {
 
                     @Override
                     public void routine() {
@@ -332,8 +357,8 @@ public class Entities {
                 });
 
                 addProjectileToList(new Projectile(getMinX() + 10, getMaxY(), 2,
-                        30, true, getVesselID(), game, false,
-                        Movement.S, false) {
+                        30, true, getVesselID(), 1001, game,
+                        Movement.S, 5, 5, false) {
 
                     @Override
                     public void routine() {
@@ -343,8 +368,8 @@ public class Entities {
                 });
 
                 addProjectileToList(new Projectile(getMinX(), getMaxY(), 2,
-                        30, true, getVesselID(), game, false,
-                        Movement.SW, false) {
+                        30, true, getVesselID(), 1001, game,
+                        Movement.SW, 5, 5,false) {
 
                     @Override
                     public void routine() {
@@ -354,8 +379,8 @@ public class Entities {
                 });
 
                 addProjectileToList(new Projectile(getMinX(), getMinY() + 10, 2,
-                        30, true, getVesselID(), game, false,
-                        Movement.W, false) {
+                        30, true, getVesselID(), 1001, game,
+                        Movement.W, 5, 5, false) {
 
                     @Override
                     public void routine() {
@@ -365,8 +390,8 @@ public class Entities {
                 });
 
                 addProjectileToList(new Projectile(getMinX(), getMinY(), 2,
-                        30, true, getVesselID(), game, false,
-                        Movement.NW, false) {
+                        30, true, getVesselID(), 1001, game,
+                        Movement.NW, 5, 5, false) {
 
                     @Override
                     public void routine() {
@@ -384,11 +409,11 @@ public class Entities {
 
 
         addVesselToList(new Vessel(minX, minY,1, 50,
-                1000,true, false, Movement.E) {
+                1000,true,  Movement.E, 61, 85, 103) {
 
             //String direction = "right";
-            int frameWidth = game.gui.FRAME_WIDTH;
-            int frameHeight = game.gui.FRAME_HEIGHT;
+            int frameWidth = game.FRAME_WIDTH;
+            int frameHeight = game.FRAME_HEIGHT;
             int frame = 0;
             //boolean beamSwitch = true;
 
@@ -432,7 +457,7 @@ public class Entities {
 
                     addProjectileToList(new Projectile(getMinX(), getMaxY() - 5, 5,
                             17, true,
-                            getVesselID(), game, false, Movement.S, false) {
+                            getVesselID(), 1001, game,  Movement.S, 5, 5,false) {
 
                         @Override
                         public void routine() {
@@ -443,7 +468,7 @@ public class Entities {
 
                     addProjectileToList(new Projectile(getMinX() + 16, getMaxY() - 5, 5,
                             17, true,
-                            getVesselID(), game, false, Movement.S, false) {
+                            getVesselID(), 1001, game,  Movement.S, 5, 5,false) {
 
                         @Override
                         public void routine() {
@@ -454,7 +479,7 @@ public class Entities {
 
                     addProjectileToList(new Projectile(getMaxX() - 5, getMaxY() - 5, 5,
                             17, true,
-                            getVesselID(), game, false, Movement.S, false) {
+                            getVesselID(), 1001, game,  Movement.S, 5, 5,false) {
 
                         @Override
                         public void routine() {
@@ -465,7 +490,7 @@ public class Entities {
 
                     addProjectileToList(new Projectile(getMaxX() - 19, getMaxY() - 5, 5,
                             17, true,
-                            getVesselID(), game, false, Movement.S, false) {
+                            getVesselID(), 1001, game,  Movement.S, 5, 5,false) {
 
                         @Override
                         public void routine() {
@@ -479,7 +504,7 @@ public class Entities {
                 if (frame % 8 == 0 && frame > 320) {
                     addProjectileToList(new Projectile(getMaxX() - 20, getMaxY() - 46, 5,
                             17, true,
-                            getVesselID(), game, false, Movement.E, false) {
+                            getVesselID(), 1001, game,  Movement.S, 5, 5,false) {
 
                         @Override
                         public void routine() {
@@ -490,7 +515,7 @@ public class Entities {
 
                     addProjectileToList(new Projectile(getMaxX() - 20, getMaxY() - 57, 5,
                             17, true,
-                            getVesselID(), game, false, Movement.E, false) {
+                            getVesselID(), 1001, game,  Movement.S, 5, 5,false) {
 
                         @Override
                         public void routine() {
@@ -499,7 +524,7 @@ public class Entities {
 
                     });                    addProjectileToList(new Projectile(getMaxX() - 20, getMaxY() - 46, 5,
                             17, true,
-                            getVesselID(), game, false, Movement.E, false) {
+                            getVesselID(), 1001, game,  Movement.S, 5, 5,false) {
 
                         @Override
                         public void routine() {
@@ -510,7 +535,7 @@ public class Entities {
 
                     addProjectileToList(new Projectile(getMaxX() - 20, getMaxY() - 57, 5,
                             17, true,
-                            getVesselID(), game, false, Movement.E, false) {
+                            getVesselID(), 1001, game,  Movement.S, 5, 5,false) {
 
                         @Override
                         public void routine() {
@@ -521,7 +546,7 @@ public class Entities {
 
                     addProjectileToList(new Projectile(getMinX() + 18, getMaxY() - 46, 5,
                             17, true,
-                            getVesselID(), game, false, Movement.W, false) {
+                            getVesselID(), 1001, game,  Movement.S, 5, 5,false){
 
                         @Override
                         public void routine() {
@@ -532,7 +557,7 @@ public class Entities {
 
                     addProjectileToList(new Projectile(getMinX() + 18, getMaxY() - 57, 5,
                             17, true,
-                            getVesselID(), game, false, Movement.W, false) {
+                            getVesselID(), 1001, game,  Movement.S, 5, 5,false) {
 
                         @Override
                         public void routine() {
@@ -547,7 +572,7 @@ public class Entities {
 
                     addProjectileToList(new Projectile(getMinX() + 36, getMaxY() - 38, 7,
                             1, true,
-                            getVesselID(), game, false, Movement.S, true) {
+                            getVesselID(), 1002, game,  Movement.S, 10, 10, true) {
 
                         @Override
                         public void routine() {
@@ -564,5 +589,5 @@ public class Entities {
         });
     }
 
- */
+
 }

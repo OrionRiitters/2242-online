@@ -10,22 +10,19 @@ public abstract class Entity { // This abstract class will contain Vessel and Pr
     private int collideDamage;
     private boolean active;
     private String direction;
-    private boolean friendly;
 
     public Entity(int minX, int minY, int speed, int collideDamage, boolean active,
-                  boolean friendly, String direction, int height, int width) {
+                   String direction, int height, int width) {
         this.minX = minX;
         this.minY = minY;
         this.maxX = minX + width;
-        this.maxY = minY - height;
+        this.maxY = minY + height;
         this.collideDamage = collideDamage;
         this.active = active;
         this.speed = speed;
-        this.friendly = friendly;
         this.direction = direction;
     }
 
-    public boolean isFriendly() {return friendly;}
 
     public int getMinX() {
         return minX;
