@@ -7,6 +7,25 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
   <body>
+
+      <!-- Hosting the images on imgur because it is easier than serving static files with Java! -->
+
+      <img id="background" name="background" style="display:none" src="https://i.imgur.com/eLuiaiK.png" />
+      <img id="0" name="player1-vessel" style="display:none" src="https://i.imgur.com/SAo8Jmg.png" />
+      <img id="1" name="player2-vessel" style="display:none" src="https://i.imgur.com/gMAEAYo.png" />
+      <img id="2" name="player3-vessel" style="display:none" src="https://i.imgur.com/9miu15J.png" />
+      <img id="3" name="player4-vessel" style="display:none" src="https://i.imgur.com/CqvkK2h.png" />
+      <img id="100" name="enemy1-vessel" style="display:none" src="https://i.imgur.com/tkfwJxm.png" />
+      <img id="101" name="enemy2-vessel" style="display:none" src="https://i.imgur.com/ZPuTigw.png" />
+      <img id="102" name="enemy3-vessel" style="display:none" src="https://i.imgur.com/imXQ5fU.png" />
+      <img id="103" name="boss-vessel" style="display:none" src="https://i.imgur.com/vSl6nBS.png" />
+      <img id="1000" name="player-projectile" style="display:none" src="https://i.imgur.com/dg60fBg.png" />
+      <img id="1001" name="enemy-projectile" style="display:none" src="https://i.imgur.com/TZ7BZt1.png" />
+      <img id="1002" name="boss-projectile" style="display:none" src="https://i.imgur.com/6qG7tuP.png" />
+
+      <canvas id="gameCanvas" width="640" height="480"></canvas>
+
+
     <p class="ms">
       ghj
     </p>
@@ -16,8 +35,48 @@
   </body>
   <script>
 
+
+
+
+
+
+   let canvas = document.getElementById("gameCanvas")
+
+   function renderCanvas(state) {
+
+       console.log(state[0].frame)
+       console.log(state[1][1] + " - " + state[1][2])
+
+       let c = document.getElementById("gameCanvas");
+       let ctx = c.getContext("2d");
+       let bg = document.getElementById("background");
+       ctx.drawImage(bg, 0, 0);
+
+       for (let i = 1 ; i < state.length ; i++ ) {
+           renderSprite(state[i], ctx)
+
+       }
+
+   }
+
+   /* Entities sent to client are stored in an array to save space.
+    * 0 = ID, 1 = minX, 2 = minY
+    */
+   function renderSprite(entity, ctx) {
+       sprite = document.getElementById(entity[0])
+       ctx.drawImage(sprite, entity[1], entity[2])
+   }
+
+
+
+
+
+
+
+   /* Keys object is updated with event listeners and sent to server once a frame
+    */
    let keys = {
-       id: false,
+       id: false, 
        A: false,
        W: false,
        D: false,
@@ -26,6 +85,8 @@
        Q: false
    }
 
+   /* These two event listeners update the state of keys.
+    */
    $(document).ready(function() {
        $(document).on("keydown", event => {
            let key = event.code.slice(3, (event.code.length))
@@ -42,15 +103,21 @@
        });
    });
 
-   let authSent = false;
 
+
+   let validAuthKeys = [0, 1, 2, 3]
+
+   /* auth() sends an /auth GET request to the server. The server sends back an ID that
+    * this client needs to access the client's inputbuffer. The overall authentication
+    * is too dependent on the client code imo and I would like to fix it up if I have time.
+    */
    function auth() {
        $(document).on("keyup", event => {
            if (event.code.slice(3, event.code.length) == "U") {
                axios.get("/auth").then(res => {
                    keys.id = res.data.id
-                   authSent = true;
-                   if (keys.id == 0 || keys.id == 1) {
+                   $("img[name='player-vessel']").attr("id", res.data.id)
+                   if (keys.id in validAuthKeys) {
                        loop()
                    }
                }).catch(err => {console.log(err)});
@@ -59,21 +126,71 @@
 
    }
 
+   /* Sends keys object to server on a loop.
+    */
    function loop() {
        setTimeout(() => {
-           keys.ping = Date.now()
+
            axios.post("/cmd", keys)
-                           .then(res => {
-                               console.log(res.data[0][1] + "--" +  res.data[0][2])
-                               console.log(res.data[1][1] + "--" + res.data[1][2])
-                           })
+                .then(res => {
+                        if (res.data != "Observer timeout") {
+                            frameBuffer.push(res.data)
 
-           if (keys.ce) return;
-           loop()
-       }, 20)
+                            quickSort(frameBuffer, 0, frameBuffer.length -1)
+
+                        } else { console.log("Observer timeout") }
+                    if (frameBuffer.length > 6) {
+                            renderCanvas(frameBuffer.shift())
+                        }
+                })
+                    if (keys.ce) return;
+                    loop()
+       }, 16)
    }
-   auth()
+           auth()
 
+           let frameBuffer = []
+
+           /* quickSort, partition, and swap taken from
+            * https://khan4019.github.io/front-end-Interview-Questions/sort.html#quickSort
+            * Added a bit of code for this to work on resposne objects rather than arrays.
+            */
+           function quickSort(arr, left, right){
+               var len = arr.length, 
+                   pivot,
+                   partitionIndex;
+
+
+               if(left < right){
+                   pivot = right;
+                   partitionIndex = partition(arr, pivot, left, right);
+                   
+                   //sort left and right
+                   quickSort(arr, left, partitionIndex - 1);
+                   quickSort(arr, partitionIndex + 1, right);
+               }
+               return arr;
+           }
+
+           function partition(arr, pivot, left, right){
+               var pivotValue = arr[pivot][0].frame,
+                   partitionIndex = left;
+
+               for(var i = left; i < right; i++){
+                   if(arr[i][0].frame < pivotValue){
+                       swap(arr, i, partitionIndex);
+                       partitionIndex++;
+                   }
+               }
+               swap(arr, right, partitionIndex);
+               return partitionIndex;
+           }
+
+           function swap(arr, i, j){
+               var temp = arr[i];
+               arr[i] = arr[j];
+               arr[j] = temp;
+           }
 
 
 

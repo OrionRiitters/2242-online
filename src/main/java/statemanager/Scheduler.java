@@ -57,12 +57,14 @@ public class Scheduler extends Thread {
          */
         while (observer.getGameState() == null) {
             long now = System.currentTimeMillis();
-            if (now - then > 20) break;
+            if (now - then > 0) break;
         }
 
         /* Set response to something else when gameState update times out
          */
+
         response = observer.getGameState() == null ? "Observer timeout" : observer.getGameState();
+
         try {
             t.sendResponseHeaders(200, response.getBytes(StandardCharsets.UTF_8).length);
             t.getResponseBody().write(response.getBytes());
@@ -89,15 +91,14 @@ public class Scheduler extends Thread {
      */
     @Override
     public void run() {
-        long then = System.currentTimeMillis();
-        long now = System.currentTimeMillis();
 
         while(true) {
-            while(now - then < 20) {
-                now = System.currentTimeMillis();
-            }
-            then = now;
+            try {
+                this.sleep(15);
+            } catch (InterruptedException exc) { System.out.println(exc); }
+            System.out.println(System.currentTimeMillis());
             bufferToGame();
+
         }
     }
 

@@ -16,7 +16,6 @@ public class Placeholder {
         for (String s : buffer) {
             if (s != null) {
                 JSONObject json = new JSONObject(s);
-                System.out.println(s);
                 int playerID = (json.getInt("id"));
 
                 PlayerVessel pv;
@@ -55,6 +54,8 @@ public class Placeholder {
     private static String writeStateJSON(ArrayList<Integer[]> state) {
         StringBuilder outerString = new StringBuilder();
         JSONWriter outerWriter = new JSONWriter(outerString).array();
+
+        outerWriter.object().key("frame").value(game.getFrame()).endObject();
 
         for (Integer[] a : state) {
             JSONWriter innerWriter = outerWriter.array();

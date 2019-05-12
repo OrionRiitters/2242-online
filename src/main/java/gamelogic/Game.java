@@ -11,6 +11,7 @@ public class Game {
     final public int FRAME_HEIGHT = 480;
 
     protected Integer[] players = new Integer[4];
+    protected int frame = 0;
 
     public static boolean exitGame = false;
 
@@ -31,12 +32,18 @@ public class Game {
     /* Adds all entity states to an ArrayList and returns it.
      */
     public ArrayList<Integer[]> getGameState() {
+
         return entities.getPlayerVesselStates();
+    }
+
+    protected int getFrame() {
+        frame++;
+        return frame;
     }
 
     protected void addPlayer(int id) {
         PlayerVessel pv = new PlayerVessel(
-                id, 1, 1, 1, 1, 1, true,
+                id, 1, 1, 3, 1, 1, true,
                 this, true, "N", 4, 5
         );
         entities.addPlayerVesselToList(pv);

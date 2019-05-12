@@ -25,15 +25,14 @@ public class StateObservable extends Observable {
         this.gameState = gameState;
         setChanged();
         notifyObservers(gameState);
+        System.out.println(System.currentTimeMillis() + "-");
     }
 
     public void setPlayers(Integer[] playerIDArray) {
         for (int i = 0 ; i < 4 ; i++) {
             if (playerIDArray[i] != null) {
-                System.out.println(playerIDArray[i]);
                 players[i] = playerIDArray[i];
             } else {
-                System.out.println("/" + i);
             }
         }
     }
