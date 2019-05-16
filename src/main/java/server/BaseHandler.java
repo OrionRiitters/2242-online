@@ -15,7 +15,7 @@ public class BaseHandler implements HttpHandler {
         InputStream is = t.getRequestBody();
 
         try {
-            response = TheServer.loadStatic();
+            response = GenerateHTML.getHTML();
         } catch (Exception e) {
             System.out.println(e);
         }
