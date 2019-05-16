@@ -41,23 +41,8 @@ public class Collisions {
         }
 
     }
-    // This method checks collisions between playerVessel and all unfriendly projectiles
- /*   public void runPlayerToProjectileCollisions(Vessel vessel, ArrayList<Projectile> projectileList ) {
-
-        for (int i = 0 ; i < entities.projectileList.size() ; i++) {
-            Projectile projectile = projectileList.get(i);
-            if (checkCollision(vessel, projectile) && !projectile.isFriendly()) {
-                projectile.collide(vessel);
-                projectile.setActive(projectile.isAlwaysActive());
-            }
-        }
-
-    }*/
-
 
     public boolean checkCollision(Entity e1, Entity e2) { // Check if two entities are colliding
-       // System.out.println(e1.getMinX() + "-" + e1.getMaxX() + "-" + e1.getMinY() + "-" + e1.getMaxY());
-       // System.out.println(e2.getMinX() + "-" + e2.getMaxX() + "-" + e2.getMinY() + "-" + e2.getMaxY());
         return ((e1.getMaxX() >= e2.getMinX() && e1.getMaxY() >= e2.getMinY()) &&
                 (e1.getMinX() <= e2.getMaxX() && e1.getMinY() <= e2.getMaxY()));
     }

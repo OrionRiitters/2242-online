@@ -106,12 +106,6 @@ public class GenerateHTML {
                 "\n" +
                 "    <canvas id=\"gameCanvas\" width=\"640\" height=\"480\"></canvas>\n" +
                 "\n" +
-                "    <p class=\"ms\">\n" +
-                "      ghj\n" +
-                "    </p>\n" +
-                "    <button class=\"btn\">\n" +
-                "      Send cmd request\n" +
-                "    </button>\n" +
                 "  </body>\n" +
                 "  <script>\n" +
                 "   let canvas = document.getElementById(\"gameCanvas\");\n" +

@@ -56,7 +56,7 @@ public class Game {
 
     protected void addPlayer(int id) {
         PlayerVessel pv = new PlayerVessel(
-                 1, 1, 3, 1, 1, true,
+                 300, 300, 3, 5, 1150, true,
                 this, "N", 42, 33, id
         );
         entities.addVesselToList(pv);
@@ -73,18 +73,5 @@ public class Game {
     }
 
 
-    /*
-    KEEP FOR REFERENCE
 
-    private void update() { // Call functions to update game here. This is called once every frame
-        entities.runRoutines();
-        collisions.runAllCollisions();
-        collisions.runPlayerToProjectileCollisions(entities.getPlayerVessel(), entities.projectileList);
-        entities.purgeProjectiles();
-        entities.purgeVessels();
-        levelOne.updateTime(timeStamp);
-        levelOne.checkReleases();
-    }
-
-     */
 }

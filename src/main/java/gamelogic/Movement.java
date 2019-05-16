@@ -12,24 +12,23 @@ public class Movement {
     final static String NW = "NW";
 
     public static void move(Entity entity, String direction){
-
-        switch(direction) {
-            case(N):
-                moveN(entity, entity.getSpeed());
-            case(NE):
-                moveNE(entity, entity.getSpeed());
-            case(E):
-                moveE(entity, entity.getSpeed());
-            case(SE):
-                moveSE(entity, entity.getSpeed());
-            case(S):
-                moveS(entity, entity.getSpeed());
-            case(SW):
-                moveSW(entity, entity.getSpeed());
-            case(W):
-                moveW(entity, entity.getSpeed());
-            case(NW):
-                moveNW(entity, entity.getSpeed());
+        if (direction.equals(E)) {
+            moveE(entity, entity.getSpeed());
+        } else if (direction.equals(S)) {
+            moveS(entity, entity.getSpeed());
+        } else if (direction.equals(W)) {
+            moveW(entity, entity.getSpeed());
+        } else if (direction.equals(N)) {
+            moveN(entity, entity.getSpeed());
+        } else if (direction.equals(NE)) {
+            moveNE(entity, entity.getSpeed());
+            entity.setDirection(NE);
+        } else if (direction.equals(SE)) {
+            moveSE(entity, entity.getSpeed());
+        } else if (direction.equals(SW)) {
+            moveSW(entity, entity.getSpeed());
+        } else if (direction.equals(NW)) {
+            moveNW(entity, entity.getSpeed());
         }
     }
 
@@ -82,28 +81,17 @@ public class Movement {
     }
 
     public static String getOppositeDirection (String direction) {
-
-        switch(direction) {
-            case (N):
-                return S;
-            case (NE):
-                return SW;
-            case (E):
-                return W;
-            case (SE):
-                return NW;
-            case (S):
-                return N;
-            case (SW):
-                return NE;
-            case (W):
-                return E;
-            default:
-                return SE;
-        }
+        if (direction.equals(E)) return W;
+        else if (direction.equals(S)) return N;
+        else if (direction.equals(W)) return E;
+        else if (direction.equals(N)) return S;
+        else if (direction.equals(NE)) return SW;
+        else if (direction.equals(SE)) return NW;
+        else if (direction.equals(SW)) return NE;
+        else return SE;
     }
 
-    protected static String randomDirection () throws NullPointerException {
+    protected static String randomDirection() throws NullPointerException {
         int randomNum = (int) Math.ceil(Math.random() * 8f); // Create random number 1-8, return random direction
         switch(randomNum) {
             case(1):

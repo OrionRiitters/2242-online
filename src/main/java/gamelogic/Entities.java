@@ -121,8 +121,8 @@ public class Entities {
 
     protected void createEnemy1(int minX, int minY) {  // Creates anonymous subclass of vessel
 
-        addVesselToList(new Vessel(minX, minY,2, 20,
-                50, true, Movement.E, 30, 36, 100) {
+        addVesselToList(new Vessel(minX, minY,2, 2,
+                100, true, Movement.E, 30, 36, 100) {
 
             //String direction = "right";
             int frameWidth = game.FRAME_WIDTH;
@@ -155,6 +155,7 @@ public class Entities {
 
                 if (!OOB) {
                     Movement.move(this, this.getDirection());
+                    System.out.println(this.getDirection());
                 }
 
                 if (frame == 0) {

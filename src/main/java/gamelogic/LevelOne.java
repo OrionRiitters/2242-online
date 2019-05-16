@@ -8,7 +8,7 @@ public class LevelOne {
     long levelTime = 0;
 
     int nextRelease = 0; // Sets up variables to control enemy release times
-    long[] enemyReleaseTimes = {3000, 15000, 35000, 70000, 90000, 0};
+    long[] enemyReleaseTimes = {3000, 15000, 35000, 550000, 750000, 0};
 
 
     public LevelOne(Game game) {

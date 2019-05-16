@@ -13,7 +13,7 @@ public class PlayerVessel extends Vessel {
     private boolean keyDown;
     private boolean keySpace;
     final int PROJECTILE_SPACING = 10;
-    private int projectileAccum = 0;
+    private int projectileAccum = 1;
     private int maxHealth;
     public HashMap<String, Boolean> commands = new HashMap<>(5);
 
@@ -87,7 +87,7 @@ public class PlayerVessel extends Vessel {
     protected void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
 
         entities.addProjectileToList(new Projectile(getMinX(), getMinY() + 9, 4,
-                5, true, getVesselID(), 1000, game,
+                4, true, getVesselID(), 1000, game,
                 Movement.N, 5, 5, false) {
 
             @Override
@@ -106,7 +106,7 @@ public class PlayerVessel extends Vessel {
 
         });
         entities.addProjectileToList(new Projectile(getMinX() + 28, getMinY() + 9,4,
-                5, true, getVesselID(), 1000,game,
+                4, true, getVesselID(), 1000,game,
                 Movement.N, 5, 5, false) {
 
             @Override
