@@ -53,12 +53,13 @@ public class Scheduler extends Thread {
         StateObserver observer = observers[slot];
         String response;
 
-        /* If gamelogic state was never updated, timeout after 200 ms
+        /* If gamelogic state was never updated, timeout after 20 ms
          */
-        while (observer.getGameState() == null) {
-            long now = System.currentTimeMillis();
-            if (now - then > 20) break;
-        }
+            try {
+                this.sleep(20);
+            } catch (InterruptedException ie) {
+                System.out.println(ie);
+            }
 
         /* Set response to something else when gameState update times out
          */
@@ -73,6 +74,7 @@ public class Scheduler extends Thread {
 
         } finally {
             t.getResponseBody().close();
+            System.out.println(System.currentTimeMillis());
             observer.resetGameState();
         }
     }
@@ -94,7 +96,7 @@ public class Scheduler extends Thread {
 
         while(true) {
             try {
-                this.sleep(15);
+                this.sleep(10);
             } catch (InterruptedException exc) { System.out.println(exc); }
           //  System.out.println(System.currentTimeMillis());
             bufferToGame();
