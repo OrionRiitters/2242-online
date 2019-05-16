@@ -178,10 +178,9 @@
     */
    function loop() {
        setTimeout(() => {
-           console.log(Date.now() + "<<<<<<");
            axios.post("/cmd", keys).then(res => {
                //console.log(res.data)
-               if (res.data != "Observer timeout") {
+               if (res.data[0].frame) {
                    frameBuffer.push(res.data);
 
                    quickSort(frameBuffer, 0, frameBuffer.length - 1);
@@ -195,7 +194,6 @@
                if (frameBuffer.length > 4) {
                    renderCanvas(frameBuffer.shift());
                    for (i in frameBuffer) {
-                       console.log(frameBuffer[i][0].frame);
                    }
                }
                return;
