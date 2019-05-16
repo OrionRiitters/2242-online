@@ -57,7 +57,7 @@ public class Scheduler extends Thread {
          */
         while (observer.getGameState() == null) {
             long now = System.currentTimeMillis();
-            if (now - then > 0) break;
+            if (now - then > 20) break;
         }
 
         /* Set response to something else when gameState update times out
