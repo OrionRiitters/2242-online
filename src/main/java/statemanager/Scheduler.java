@@ -55,9 +55,10 @@ public class Scheduler extends Thread {
 
         /* If gamelogic state was never updated, timeout after 200 ms
          */
-        while (observer.getGameState() == null) {
-            long now = System.currentTimeMillis();
-            if (now - then > 20) break;
+        try {
+            this.sleep(20);
+        } catch (InterruptedException ie) {
+            System.out.println(ie);
         }
 
         /* Set response to something else when gameState update times out
