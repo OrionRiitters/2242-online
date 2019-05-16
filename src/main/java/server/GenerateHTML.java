@@ -115,21 +115,17 @@ public class GenerateHTML {
                 "  </body>\n" +
                 "  <script>\n" +
                 "   let canvas = document.getElementById(\"gameCanvas\");\n" +
-                "\n" +
                 "   function renderCanvas(state) {\n" +
                 "       //console.log(state[0].frame)\n" +
                 "       //console.log(state[1][1] + \" - \" + state[1][2])\n" +
-                "\n" +
                 "       let c = document.getElementById(\"gameCanvas\");\n" +
                 "       let ctx = c.getContext(\"2d\");\n" +
                 "       let bg = document.getElementById(\"background\");\n" +
                 "       ctx.drawImage(bg, 0, 0);\n" +
-                "\n" +
                 "       for (let i = 1; i < state.length; i++) {\n" +
                 "           renderSprite(state[i], ctx);\n" +
                 "       }\n" +
                 "   }\n" +
-                "\n" +
                 "   /* Entities sent to client are stored in an array to save space.\n" +
                 "    * 0 = ID, 1 = minX, 2 = minY\n" +
                 "    */\n" +
@@ -137,7 +133,6 @@ public class GenerateHTML {
                 "       sprite = document.getElementById(entity[0]);\n" +
                 "       ctx.drawImage(sprite, entity[1], entity[2]);\n" +
                 "   }\n" +
-                "\n" +
                 "   /* Keys object is updated with event listeners and sent to server once a frame\n" +
                 "    */\n" +
                 "   let keys = {\n" +
@@ -149,7 +144,6 @@ public class GenerateHTML {
                 "       ce: false, // space\n" +
                 "       Q: false\n" +
                 "   };\n" +
-                "\n" +
                 "   /* These two event listeners update the state of keys.\n" +
                 "    */\n" +
                 "   $(document).ready(function() {\n" +
@@ -159,7 +153,6 @@ public class GenerateHTML {
                 "               keys[key] = true;\n" +
                 "           }\n" +
                 "       });\n" +
-                "\n" +
                 "       $(document).on(\"keyup\", event => {\n" +
                 "           let key = event.code.slice(3, event.code.length);\n" +
                 "           if (keys.hasOwnProperty(key)) {\n" +
@@ -167,9 +160,7 @@ public class GenerateHTML {
                 "           }\n" +
                 "       });\n" +
                 "   });\n" +
-                "\n" +
                 "   let validAuthKeys = [0, 1, 2, 3];\n" +
-                "\n" +
                 "   /* auth() sends an /auth GET request to the server. The server sends back an ID that\n" +
                 "    * this client needs to access the client's inputbuffer. The overall authentication\n" +
                 "    * is too dependent on the client code imo and I would like to fix it up if I have time.\n" +
@@ -195,29 +186,23 @@ public class GenerateHTML {
                 "           }\n" +
                 "       });\n" +
                 "   }\n" +
-                "\n" +
                 "   /* Sends keys object to server on a loop.\n" +
                 "    */\n" +
                 "   function loop() {\n" +
                 "       setTimeout(() => {\n" +
-                "           console.log(Date.now() + \"<<<<<<\");\n" +
                 "           axios.post(\"/cmd\", keys).then(res => {\n" +
                 "               //console.log(res.data)\n" +
-                "               if (res.data != \"Observer timeout\") {\n" +
+                "               if (res.data[0].frame) {\n" +
                 "                   frameBuffer.push(res.data);\n" +
-                "\n" +
                 "                   quickSort(frameBuffer, 0, frameBuffer.length - 1);\n" +
                 "               } else {\n" +
                 "                   let newFrame = frameBuffer[3];\n" +
                 "                   frameBuffer.push(newFrame);\n" +
-                "\n" +
                 "                   console.log(\"Observer timeout\");\n" +
                 "               }\n" +
-                "\n" +
                 "               if (frameBuffer.length > 4) {\n" +
                 "                   renderCanvas(frameBuffer.shift());\n" +
                 "                   for (i in frameBuffer) {\n" +
-                "                       console.log(frameBuffer[i][0].frame);\n" +
                 "                   }\n" +
                 "               }\n" +
                 "               return;\n" +
@@ -227,9 +212,7 @@ public class GenerateHTML {
                 "       }, 16);\n" +
                 "   }\n" +
                 "   auth();\n" +
-                "\n" +
                 "   let frameBuffer = [];\n" +
-                "\n" +
                 "   /* quickSort, partition, and swap taken from\n" +
                 "    * https://khan4019.github.io/front-end-Interview-Questions/sort.html#quickSort\n" +
                 "    * Added a bit of code for this to work on resposne objects rather than arrays.\n" +
@@ -238,22 +221,18 @@ public class GenerateHTML {
                 "       var len = arr.length,\n" +
                 "           pivot,\n" +
                 "           partitionIndex;\n" +
-                "\n" +
                 "       if (left < right) {\n" +
                 "           pivot = right;\n" +
                 "           partitionIndex = partition(arr, pivot, left, right);\n" +
-                "\n" +
                 "           //sort left and right\n" +
                 "           quickSort(arr, left, partitionIndex - 1);\n" +
                 "           quickSort(arr, partitionIndex + 1, right);\n" +
                 "       }\n" +
                 "       return arr;\n" +
                 "   }\n" +
-                "\n" +
                 "   function partition(arr, pivot, left, right) {\n" +
                 "       var pivotValue = arr[pivot][0].frame,\n" +
                 "           partitionIndex = left;\n" +
-                "\n" +
                 "       for (var i = left; i < right; i++) {\n" +
                 "           if (arr[i][0].frame < pivotValue) {\n" +
                 "               swap(arr, i, partitionIndex);\n" +
@@ -263,7 +242,6 @@ public class GenerateHTML {
                 "       swap(arr, right, partitionIndex);\n" +
                 "       return partitionIndex;\n" +
                 "   }\n" +
-                "\n" +
                 "   function swap(arr, i, j) {\n" +
                 "       var temp = arr[i];\n" +
                 "       arr[i] = arr[j];\n" +
@@ -277,7 +255,7 @@ public class GenerateHTML {
                 "      padding: 50;\n" +
                 "    }\n" +
                 "  </style>\n" +
-                "</html>\n";
+                "</html>";
         return html;
     }
 }

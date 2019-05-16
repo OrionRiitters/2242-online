@@ -43,28 +43,4 @@ public class TheServer extends Thread {
         return stringBuilder.toString();
     }
 
-
-   /*  Generates HTML file into current directory and returns it
-    */
-    public static String loadStatic() {
-        GenerateHTML.createFile();
-        String filename = "index.html";
-        String currentDir = System.getProperty("user.dir");
-
-        String filePath = currentDir + File.separator + filename;
-        File file = new File(filePath);
-
-        try (
-                FileInputStream fis = new FileInputStream(file);
-        ) {
-            byte[] data = new byte[(int) file.length()];
-            fis.read(data);
-
-            return new String(data, "UTF-8");
-        } catch (IOException ioe) {
-            System.out.println(ioe);
-            return null;
-        }
-    }
-
 }
