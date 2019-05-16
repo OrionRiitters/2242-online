@@ -12,6 +12,10 @@ public class TheServer extends Thread {
 
     private static final int PORT = 8000;
 
+
+    /* Documentation for HttpServer and its associated classes can be found at
+     * https://docs.oracle.com/javase/8/docs/jre/api/net/httpserver/spec/com/sun/net/httpserver/HttpServer.html
+     */
     @Override
     public void run() {
         try {
@@ -30,10 +34,8 @@ public class TheServer extends Thread {
 
     public static String readStream(InputStream is) throws IOException{
         StringBuilder stringBuilder = new StringBuilder();
-        String line = null;
+        String line;
 
-        /* Not sure if the while statement below will close the stream early or not.
-         */
         try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
             while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);

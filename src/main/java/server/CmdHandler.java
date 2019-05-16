@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class CmdHandler implements HttpHandler {
-
+    /* CmdHandler's handle method is run by the server's executor.
+     * It takes an input stream, pushes it to inputbuffer, and then calls
+     * on Scheduler to write a response.
+     */
     public void handle(HttpExchange t) throws IOException {
         InputStream is = t.getRequestBody();
         InputBuffer inputBuffer = InputBuffer.get_instance();

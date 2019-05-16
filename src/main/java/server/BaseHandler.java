@@ -1,12 +1,9 @@
 package server;
 
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
-import java.util.List;
-import java.util.Map;
 
 public class BaseHandler implements HttpHandler {
 

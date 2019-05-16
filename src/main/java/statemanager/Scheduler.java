@@ -94,14 +94,14 @@ public class Scheduler extends Thread {
     @Override
     public void run() {
 
-        while(true) {
-            try {
-                this.sleep(10);
-            } catch (InterruptedException exc) { System.out.println(exc); }
-          //  System.out.println(System.currentTimeMillis());
-            bufferToGame();
-
-        }
+            while (true) {
+                try {
+                    this.sleep(10);
+                } catch (InterruptedException exc) {
+                    System.out.println(exc);
+                }
+                bufferToGame();
+            }
     }
 
 }

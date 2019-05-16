@@ -4,10 +4,8 @@ import java.util.Observable;
 
 public class StateObservable extends Observable {
 
-
     private String gameState;
-   private Integer[] players = new Integer[4];
-
+    private Integer[] players = new Integer[4];
 
     static StateObservable _instance = null;
     /* This class implements the singleton design pattern
