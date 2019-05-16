@@ -56,7 +56,7 @@ public class Scheduler extends Thread {
         /* If gamelogic state was never updated, timeout after 200 ms
          */
         try {
-            this.sleep(20);
+            this.sleep(23);
         } catch (InterruptedException ie) {
             System.out.println(ie);
         }
@@ -95,7 +95,7 @@ public class Scheduler extends Thread {
 
         while(true) {
             try {
-                this.sleep(5);
+                this.sleep(15);
             } catch (InterruptedException exc) { System.out.println(exc); }
           //  System.out.println(System.currentTimeMillis());
             bufferToGame();
