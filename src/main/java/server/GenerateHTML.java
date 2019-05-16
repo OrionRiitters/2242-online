@@ -196,9 +196,9 @@ public class GenerateHTML {
                 "                   frameBuffer.push(res.data);\n" +
                 "                   quickSort(frameBuffer, 0, frameBuffer.length - 1);\n" +
                 "               } else {\n" +
-                "                   let newFrame = frameBuffer[3];\n" +
-                "                   frameBuffer.push(newFrame);\n" +
-                "                   console.log(\"Observer timeout\");\n" +
+                "                   let newFrame = frameBuffer[frameBuffer.length - 1];\n" +
+                "                   if (newFrame) {frameBuffer.push(newFrame)};" +
+                "                   console.log(\"res.data\");\n" +
                 "               }\n" +
                 "               if (frameBuffer.length > 4) {\n" +
                 "                   renderCanvas(frameBuffer.shift());\n" +
