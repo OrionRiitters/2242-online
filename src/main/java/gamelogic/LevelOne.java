@@ -1,18 +1,14 @@
 package gamelogic;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.HashMap;
-
 public class LevelOne {
 
     Game game;
     Entities entities;
-    final long timeDifference;
+    long timeDifference;
     long levelTime = 0;
 
     int nextRelease = 0; // Sets up variables to control enemy release times
-    long[] enemyReleaseTimes = {2000, 20000, 40000, 80000, 100000, 0};
+    long[] enemyReleaseTimes = {1000, 15000, 35000, 70000, 90000, 0};
 
 
     public LevelOne(Game game) {
@@ -50,12 +46,18 @@ public class LevelOne {
                     }
             }
 
-            if (nextRelease < 5) nextRelease++;
+            if (nextRelease < 5) {
+                nextRelease++;
+            } else {
+                nextRelease = 0;
+                timeDifference = System.currentTimeMillis();
+
+            }
         }
     }
 
     private void firstRelease() {  // Each of these releases are called above by checkReleases().
-        entities.createEnemy1(-30, 20);
+        entities.createEnemy1(-100, 100);
         entities.createEnemy1(-50, 50);
         entities.createEnemy1(-80, 80);
         entities.createEnemy1(-110, 20);

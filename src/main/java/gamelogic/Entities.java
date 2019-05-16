@@ -121,8 +121,6 @@ public class Entities {
 
     protected void createEnemy1(int minX, int minY) {  // Creates anonymous subclass of vessel
 
-        System.out.println("asdf");
-
         addVesselToList(new Vessel(minX, minY,2, 20,
                 50, true, Movement.E, 30, 36, 100) {
 
