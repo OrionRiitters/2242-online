@@ -198,7 +198,7 @@ public class GenerateHTML {
                 "               } else {\n" +
                 "                   let newFrame = frameBuffer[frameBuffer.length - 1];\n" +
                 "                   if (newFrame) {frameBuffer.push(newFrame)};" +
-                "                   console.log(\"res.data\");\n" +
+                "                   console.log(res.data);\n" +
                 "               }\n" +
                 "               if (frameBuffer.length > 4) {\n" +
                 "                   renderCanvas(frameBuffer.shift());\n" +
