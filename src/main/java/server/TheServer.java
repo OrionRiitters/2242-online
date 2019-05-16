@@ -1,6 +1,5 @@
 package server;
 
-import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.*;
@@ -9,12 +8,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executors;
 
 public class TheServer extends Thread {
-
-    private static final int PORT = 8000;
+    String port_env = System.getenv("PORT");
+    final int PORT = Integer.parseInt(port_env);
 
     @Override
     public void run() {
         try {
+
+
             System.out.println("Starting up server..");
             HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 4);
             server.createContext("/cmd", new CmdHandler());
@@ -42,8 +43,17 @@ public class TheServer extends Thread {
         return stringBuilder.toString();
     }
 
-    public static String loadStatic() throws Exception {
-        File file = new File("/home/orion/IdeaProjects/2242-online/tmp-frontend/index.html");
+
+   /*  Generates HTML file into current directory and returns it
+    */
+    public static String loadStatic() {
+        GenerateHTML.createFile();
+        String filename = "index.html";
+        String currentDir = System.getProperty("user.dir");
+
+        String filePath = currentDir + File.separator + filename;
+        File file = new File(filePath);
+
         try (
                 FileInputStream fis = new FileInputStream(file);
         ) {
@@ -51,6 +61,9 @@ public class TheServer extends Thread {
             fis.read(data);
 
             return new String(data, "UTF-8");
+        } catch (IOException ioe) {
+            System.out.println(ioe);
+            return null;
         }
     }
 

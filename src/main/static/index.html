@@ -129,6 +129,8 @@
    /* Sends keys object to server on a loop.
     */
    function loop() {
+       setTimeout(() => {
+
            axios.post("/cmd", keys)
                 .then(res => {
                     console.log(res.data)
@@ -143,7 +145,8 @@
                         }
                 })
                     if (keys.Q) return;
-                    setTimeout(loop(), 16)
+                    loop()
+       }, 16)
    }
            auth()
 
