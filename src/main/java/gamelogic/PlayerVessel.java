@@ -31,10 +31,8 @@ public class PlayerVessel extends Vessel {
         this.game = game;
         maxHealth = health;
         this.playerID = playerID;
-
         entities = game.entities;
     }
-
 
     public int getPlayerID() {
         return playerID;
@@ -49,7 +47,6 @@ public class PlayerVessel extends Vessel {
 
         return position;
     }
-
 
     /* The boolean values of 'commands' will be used in routine() to update this object's state.
      * 'ce' is space (it was easier to write the key listeners in index.html by using this name for space).
@@ -75,13 +72,7 @@ public class PlayerVessel extends Vessel {
         if (commands.get("S")) Movement.moveS(this,
                 getMaxY() < game.FRAME_HEIGHT ? getSpeed() : 0);
         if (commands.get("space")) fire();
-
-
-
     }
-
-
-
 
     @Override
     protected void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
@@ -125,6 +116,8 @@ public class PlayerVessel extends Vessel {
         });
     }
 
+    /* Initialize projectile, and add integer to projectileAccum.
+     */
     protected void fire() { // Space out projectile initialization
         projectileAccum++;
 

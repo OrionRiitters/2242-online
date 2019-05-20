@@ -1,23 +1,10 @@
 package server;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
+/* This class simply returns the initial HTML string to be returned to a client.
+ * The server has become quite hack-y in order to work correctly on Heroku, and requires
+ * this as a temporary work-around.
+ */
 public class GenerateHTML {
-
-    public static void createFile() {
-        File file = new File("index.html");
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
-            String html = getHTML();
-            writer.write(html);
-            writer.close();
-        } catch (IOException ioe) {
-            System.out.println(ioe);
-        }
-    }
 
     public static String getHTML() {
         String html = "<!DOCTYPE html>\n" +

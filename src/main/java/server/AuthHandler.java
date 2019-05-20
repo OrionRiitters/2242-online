@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/* This class accesses current player ID's from StateObservable and
+ * if there are less than 4 current players, writes a new ID to the output stream.
+ */
 public class AuthHandler implements HttpHandler {
     StateObservable stateObservable = StateObservable.get_instance();
 
@@ -16,9 +19,6 @@ public class AuthHandler implements HttpHandler {
 
         String response = null;
         InputStream is = t.getRequestBody();
-        //String reqBody = TheServer.readStream(is);
-
-        //JSONObject json = new JSONObject(reqBody);
 
         Integer accum = 0;
         for (Integer i : stateObservable.getPlayers()) {
@@ -40,7 +40,5 @@ public class AuthHandler implements HttpHandler {
         OutputStream os = t.getResponseBody();
         os.write(response.getBytes());
         os.close();
-
     }
-
 }

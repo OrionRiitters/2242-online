@@ -4,10 +4,8 @@ import java.util.Observable;
 
 public class StateObservable extends Observable {
 
-
     private String gameState;
-   private Integer[] players = new Integer[4];
-
+    private Integer[] players = new Integer[4];
 
     static StateObservable _instance = null;
     /* This class implements the singleton design pattern
@@ -19,12 +17,16 @@ public class StateObservable extends Observable {
         return _instance;
     }
 
+    /* When this method is called, the relevant Observers will be notified.
+     */
     public void setGameState(String gameState) {
         this.gameState = gameState;
         setChanged();
         notifyObservers(gameState);
     }
 
+    /*
+     */
     public void setPlayers(Integer[] playerIDArray) {
         for (int i = 0 ; i < 4 ; i++) {
             if (playerIDArray[i] != null) {
@@ -39,10 +41,5 @@ public class StateObservable extends Observable {
     public Integer[] getPlayers() {
         return players;
     }
-
-
-
-
-
 
 }

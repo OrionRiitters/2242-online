@@ -3,8 +3,11 @@ package statemanager;
 
 import server.TheServer;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class InputBuffer {
@@ -23,26 +26,34 @@ public class InputBuffer {
         return _instance;
     }
 
-    /* Transform InputStream into String, then push String to buffer.
-     * Return slot that String was inserted into.
+    public static String readStream(InputStream is) throws IOException{
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    /* Calls readStream on input stream, then pushes it into a buffer slot.
+     * Return slot number of the slot that the string was inserted into.
      */
     public int streamToBuffer(InputStream is) throws IOException {
-        String commands = TheServer.readStream(is);
+        String commands = readStream(is);
         int slot = push(commands);
         return slot;
     }
 
-    /* Insert string into buffer. Return slot that string was inserted into.
+    /* Insert string into buffer. Return number of slot that the string was inserted into.
      */
     private int push(String s) {
         int slot = bufferSlot;
         buffer[bufferSlot] = s;
         bufferSlot++;
         return slot;
-    }
-
-    protected String[] getBuffer() {
-        return buffer;
     }
 
     /* Empty buffer for next round of input.
@@ -52,6 +63,7 @@ public class InputBuffer {
         bufferSlot = 0;
     }
 
-
-
+    protected String[] getBuffer() {
+        return buffer;
+    }
 }

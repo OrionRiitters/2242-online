@@ -48,13 +48,15 @@ public class Placeholder {
         }
     }
 
-    /*  Documentation that is very helpful in understanding the JSONWriter object.
+    /* Documentation that is very helpful in understanding the JSONWriter object.
      * http://stleary.github.io/JSON-java/org/json/JSONWriter.html
      */
     private static String writeStateJSON(ArrayList<Integer[]> state) {
         StringBuilder outerString = new StringBuilder();
         JSONWriter outerWriter = new JSONWriter(outerString).array();
-
+        /* Frame value is used in the client to order received game states
+         * before the oldest one is rendered to canvas.
+         */
         outerWriter.object().key("frame").value(game.getFrame()).endObject();
 
         for (Integer[] a : state) {

@@ -5,6 +5,9 @@ import java.util.ArrayList;
 public class Entities {
 
     Game game;
+    final int ID = 0;
+    final int X = 1;
+    final int Y = 2;
 
     /* Creates Arraylists of all entities. They are separated into 3 different subclass lists.
     */
@@ -44,9 +47,9 @@ public class Entities {
         for (Vessel v : vesselList) {
             Integer[] state = new Integer[3];
 
-            state[0] = v.getPlayerID();
-            state[1] = v.getMinX();
-            state[2] = v.getMinY();
+            state[ID] = v.getPlayerID();
+            state[X] = v.getMinX();
+            state[Y] = v.getMinY();
             vesselStates.add(state);
         }
         return vesselStates;
@@ -66,33 +69,37 @@ public class Entities {
 
         for (Projectile p: projectileList) {
             Integer[] state = new Integer[3];
-            state[0] = p.getProjectileID();
-            state[1] = p.getMinX();
-            state[2] = p.getMinY();
+            state[ID] = p.getProjectileID();
+            state[X] = p.getMinX();
+            state[Y] = p.getMinY();
             projectileStates.add(state);
         }
         return projectileStates;
 
     }
 
+    /* For each active projectile in bounds, add to buffer list, then clear projectile list and add buffer list
+     * to projectile list.
+     */
    protected void purgeProjectiles() {
         ArrayList<Projectile> projectileListBuffer = new ArrayList<Projectile>();
-        ArrayList<Projectile> projectileListCopy = new ArrayList<Projectile>(projectileList); // Used for projectileList.removeAll() function later.
+        ArrayList<Projectile> projectileListCopy = new ArrayList<Projectile>(projectileList);
 
         for (Projectile p : projectileList) {
-            if (!((p.getMaxX() < 0 || p.getMinX() > game.FRAME_WIDTH) || (p.getMaxY() < 0 || // If out of bounds,
-                    p.getMinY() > game.FRAME_HEIGHT)) && p.getActive()) { // or if inactive,
+            if (!((p.getMaxX() < 0 || p.getMinX() > game.FRAME_WIDTH) || (p.getMaxY() < 0 ||
+                    p.getMinY() > game.FRAME_HEIGHT)) && p.getActive()) {
 
-                p.setProjectileIndex(projectileListBuffer.size());     // reset projectile's index,
-                projectileListBuffer.add(p);                          // add projectile to bufferList,
+                p.setProjectileIndex(projectileListBuffer.size());
+                projectileListBuffer.add(p);
             }
         }
-        projectileList.removeAll(projectileListCopy);              // remove contents of projectileList,
-        projectileList.addAll(projectileListBuffer);        // add contents of bufferList to projectileList.
+        projectileList.removeAll(projectileListCopy);
+        projectileList.addAll(projectileListBuffer);
     }
 
-    protected void purgeVessels() {  // This does the same thing as purgeProjectiles, but purges vessels and
-        // only checks each vessels 'active' attribute, and not if it is OOB
+    /* For each active vessel, add to buffer list, clear vessel list, and add buffer list to vessel list.
+     */
+    protected void purgeVessels() {
         ArrayList<Vessel> vesselListBuffer = new ArrayList<Vessel>();
         ArrayList<Vessel> vesselListCopy = new ArrayList<Vessel>(vesselList);
 
@@ -161,8 +168,6 @@ public class Entities {
                 if (frame == 0) {
                     initializeProjectile();
                 }
-
-
             }
 
             @Override
@@ -179,9 +184,7 @@ public class Entities {
 
                 });
             }
-
         });
-
     }
 
     protected void createEnemy2(int minX, int minY) { // Creates anonymous subclass of vessel
@@ -193,7 +196,6 @@ public class Entities {
             int frameWidth = game.FRAME_WIDTH;
             int frameHeight = game.FRAME_HEIGHT;
             int frame = 0;
-
 
             @Override
             protected void routine() { // If ship is out of bounds, send it back in bounds
@@ -227,8 +229,6 @@ public class Entities {
                 if (frame % 31 == 0) {
                     initializeProjectile();
                 }
-
-
             }
 
             @Override
@@ -256,11 +256,7 @@ public class Entities {
 
                 });
             }
-
-
-
         });
-
     }
 
     protected void createEnemy3(int minX, int minY) { // Creates anonymous subclass of vessel
@@ -272,7 +268,6 @@ public class Entities {
             int frameWidth = game.FRAME_WIDTH;
             int frameHeight = game.FRAME_HEIGHT;
             int frame = 0;
-
 
             @Override
             protected void routine() { // If ship is out of bounds, send it back in bounds
@@ -304,8 +299,6 @@ public class Entities {
                 if (frame == 0) {
                     initializeProjectile();
                 }
-
-
             }
 
             @Override
@@ -399,13 +392,10 @@ public class Entities {
 
                 });
             }
-
         });
-
     }
 
     public void createBoss1(int minX, int minY) { // Creates anonymous subclass of vessel
-
 
         addVesselToList(new Vessel(minX, minY,1, 50,
                 1000,true,  Movement.E, 61, 85, 103) {
@@ -416,13 +406,11 @@ public class Entities {
             int frame = 0;
             //boolean beamSwitch = true;
 
-
             @Override
             protected void routine() { // If ship is out of bounds, send it back in bounds
 
                 boolean OOB = false;
                 frame = frame <= 511 ? frame + 1 : 0;
-
 
                 if (getMaxX() > frameWidth) {
                     Movement.moveW(this, getSpeed());
@@ -444,16 +432,13 @@ public class Entities {
                 } else if (!OOB) {
                     Movement.move(this, Movement.randomDirection());
                 }
-
                 initializeProjectile();
-
             }
 
             @Override
             protected void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
 
                 if (frame % 8 == 0 && frame < 255) {
-
                     addProjectileToList(new Projectile(getMinX(), getMaxY() - 5, 5,
                             17, true,
                             getVesselID(), 1001, game,  Movement.S, 5, 5,false) {
@@ -495,9 +480,7 @@ public class Entities {
                         public void routine() {
                             Movement.moveS(this, getSpeed());
                         }
-
                     });
-
                 }
 
                 if (frame % 8 == 0 && frame > 320) {
@@ -577,16 +560,9 @@ public class Entities {
                         public void routine() {
                             Movement.moveS(this, getSpeed());
                         }
-
-
-
                     });
-
                 }
-
             }
         });
     }
-
-
 }

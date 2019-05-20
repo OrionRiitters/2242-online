@@ -1,12 +1,11 @@
 package gamelogic;
 
-import java.awt.event.WindowEvent;
-import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 
 public class Game {
 
+    /* Size logical grid and client canvas.
+     */
     final public int FRAME_WIDTH = 640;
     final public int FRAME_HEIGHT = 480;
 
@@ -20,7 +19,9 @@ public class Game {
 
    Collisions collisions;
 
-    public Game(){ // Game loop, calculates when to call update()
+    /* Create instances of relevant classes.
+     */
+    public Game(){
         entities = new Entities(this);
         levelOne = new LevelOne(this);
         collisions = new Collisions(this);
@@ -71,7 +72,4 @@ public class Game {
     public ArrayList<PlayerVessel> getPlayerVessels() {
         return entities.getPlayerVesselList();
     }
-
-
-
 }

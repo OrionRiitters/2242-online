@@ -4,17 +4,21 @@ package gamelogic;
 
 import java.util.ArrayList;
 
+/*
+ */
 public class Collisions {
 
     Game game;
     Entities entities;
 
-    ArrayList<Vessel> checkedVessels = new ArrayList<Vessel>();
-
     public Collisions(Game game) {
         this.game = game;
         entities = game.entities;
     }
+
+    /* Checks collisions between all entities and calls collide() between those entities.
+     * TODO: Break method into two separate methods: projectile/vessel collisions and vessel/vessel collisions.
+     */
     public void runAllCollisions() {
         ArrayList<Vessel> vl = entities.getVesselList();
 
@@ -32,30 +36,33 @@ public class Collisions {
             ArrayList<Projectile> pl = entities.projectileList;
 
             for (Projectile p : pl) {
-
                 if (checkCollision(vessel, p) && p.getVesselID() != vessel.getVesselID()) {
                     p.collide(vl.get(i));
                     p.setActive(false);
                 }
             }
         }
-
     }
 
-    public boolean checkCollision(Entity e1, Entity e2) { // Check if two entities are colliding
+    /* Check if two entities are colliding
+     */
+    public boolean checkCollision(Entity e1, Entity e2) {
         return ((e1.getMaxX() >= e2.getMinX() && e1.getMaxY() >= e2.getMinY()) &&
                 (e1.getMinX() <= e2.getMaxX() && e1.getMinY() <= e2.getMaxY()));
     }
 
-    public void bounce(Entity e1, Entity e2) {     // Moves two entities away from one another
+    /* Moves two entities away from one another
+     */
+    public void bounce(Entity e1, Entity e2) {
         String relativeDirection = getRelativeDirection(e1, e2);
         Movement.move(e1, relativeDirection);
         Movement.move(e2, Movement.getOppositeDirection(relativeDirection));
     }
 
+    /* Returns e1's relative direction to e2 using the cardinal directions
+     */
     public String getRelativeDirection(Entity e1, Entity e2) {
-        // Returns e1's relative direction to e2 using
-        String direction = "";                               // the cardinal directions
+        String direction = "";
         float e1MidX = getEntityMidX(e1);
         float e1MidY = getEntityMidY(e1);
         float e2MidX = getEntityMidX(e2);
@@ -67,7 +74,7 @@ public class Collisions {
         return direction;
     }
 
-    private float getEntityMidX(Entity entity) {                // Used to get relative direction
+    private float getEntityMidX(Entity entity) {
         return (((float)entity.getMaxX()) - ((float)entity.getMinX()) / 2f) +
                 (float) entity.getMinX();
     }

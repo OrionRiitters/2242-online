@@ -26,7 +26,7 @@ public class Projectile extends Entity {
     }
 
     public boolean isAlwaysActive() { return alwaysActive; } // If always active, projectiles do not disappear
-    // upon collision
+                                                            // upon collision
     public void setProjectileIndex(int i) {
         projectileIndex = i;
     }
@@ -41,7 +41,6 @@ public class Projectile extends Entity {
         v.setHealth(v.getHealth() - getCollideDamage());
         if (v.getHealth() <= 0 && v.getVesselID() != vesselID){ v.setActive(false); }
     }
-
 
     protected void routine() {
         // Override this when instantiating a Projectile

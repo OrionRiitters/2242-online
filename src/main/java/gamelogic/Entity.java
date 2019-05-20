@@ -23,7 +23,6 @@ public abstract class Entity { // This abstract class will contain Vessel and Pr
         this.direction = direction;
     }
 
-
     public int getMinX() {
         return minX;
     }

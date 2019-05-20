@@ -6,17 +6,14 @@ public class LevelOne {
     Entities entities;
     long timeDifference;
     long levelTime = 0;
-
     int nextRelease = 0; // Sets up variables to control enemy release times
     long[] enemyReleaseTimes = {10000, 20000, 35000, 50000, 65000, 0};
-
 
     public LevelOne(Game game) {
         this.game = game;
         entities = game.entities;
         timeDifference = System.currentTimeMillis();
     }
-
 
     protected void updateTime(long timeStamp) {
         levelTime = timeStamp - timeDifference;
@@ -70,7 +67,6 @@ public class LevelOne {
 
         entities.createEnemy2(-30, 20);
         entities.createEnemy2(-500, 50);
-
         entities.createEnemy2(game.FRAME_WIDTH + 1200, 20);
         entities.createEnemy2(game.FRAME_WIDTH + 1300, 50);
         entities.createEnemy2(game.FRAME_WIDTH + 1450, 20);
@@ -79,7 +75,6 @@ public class LevelOne {
     }
 
     private void thirdRelease() {
-
         entities.createEnemy1(-30, 20);
         entities.createEnemy2(-100, 40);
         entities.createEnemy3(-500, 60);
@@ -88,14 +83,12 @@ public class LevelOne {
     }
 
     private void fourthRelease() {
-
         entities.createEnemy1(-33, 24);
         entities.createEnemy1(game.FRAME_WIDTH + 300, 50);
         entities.createEnemy1(-80, 80);
         entities.createEnemy1(game.FRAME_WIDTH + 300, 20);
         entities.createEnemy1(-140, 50);
         entities.createEnemy1(-170, 10);
-
         entities.createEnemy1(-30, 20);
         entities.createEnemy2(-100, 40);
         entities.createEnemy3(-500, 60);
@@ -104,8 +97,6 @@ public class LevelOne {
     }
 
     private void fifthRelease() {
-
         entities.createBoss1(game.FRAME_WIDTH / 2, -100);
-
     }
 }

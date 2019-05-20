@@ -1,13 +1,14 @@
 package server;
 
-import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
 import java.io.*;
-import java.util.List;
-import java.util.Map;
 
+/* This class handles a client's initial GET request.
+ * It grabs the HTML string from GenerateHTML and writes it
+ * to the HTTPExchange's output stream.
+ */
 public class BaseHandler implements HttpHandler {
 
     public void handle(HttpExchange t) throws IOException {

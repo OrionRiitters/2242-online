@@ -4,9 +4,11 @@ import com.sun.net.httpserver.HttpServer;
 
 import java.io.*;
 import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Executors;
 
+/*
+ * This class sets up contexts for requests, the handler thread pool, and starts on a given port.
+ */
 public class TheServer extends Thread {
     String port_env = System.getenv("PORT");
     final int PORT = Integer.parseInt(port_env);
@@ -14,8 +16,6 @@ public class TheServer extends Thread {
     @Override
     public void run() {
         try {
-
-
             System.out.println("Starting up server..");
             HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 4);
             server.createContext("/cmd", new CmdHandler());
@@ -28,19 +28,4 @@ public class TheServer extends Thread {
             System.out.println(e);
         }
     }
-
-    public static String readStream(InputStream is) throws IOException{
-        StringBuilder stringBuilder = new StringBuilder();
-        String line = null;
-
-        /* Not sure if the while statement below will close the stream early or not.
-         */
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
-            }
-        }
-        return stringBuilder.toString();
-    }
-
 }
