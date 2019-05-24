@@ -10,11 +10,14 @@ import java.util.Observer;
 
 import gamelogic.Game;
 
+/*
+ *
+ */
 public class Scheduler extends Thread {
 
-    /* Observer interface must be decoupled from Scheduler because
-     * a different Observer is used for each HttpExchange and
-     * Scheduler manages the HttpExchanges.
+    /* Scheduler was originally decoupled from the observer interface.
+     * I've now realized this probably isn't necessary.
+     * TODO: Implement Observer interface in Scheduler class.
      */
     private static Scheduler _instance = null;
     private InputBuffer inputBuffer = InputBuffer.get_instance();
@@ -45,24 +48,26 @@ public class Scheduler extends Thread {
         }
     }
 
-    /* Acquires observer location via slot and HttpExchange from HttpHandler.
+    /* Acquires Observer location via slot number and HttpExchange from HttpHandler.
      * Waits for StateObserver to acquire gamelogic state from StateObserved,
-     * then writes that state to response in HttpExchange.
+     * then writes that state to output stream in HttpExchange.
      */
-    public void writeResponse(int slot, HttpExchange t, long then) throws IOException {
+    public void writeResponse(int slot, HttpExchange t) throws IOException {
         StateObserver observer = observers[slot];
         String response;
 
-        /* If gamelogic state was never updated, timeout after 200 ms
+        /* Sleep before grabbing game state from the Observer.
          */
-        while (observer.getGameState() == null) {
-            long now = System.currentTimeMillis();
-            if (now - then > 20) break;
+        try {
+            this.sleep(23);
+        } catch (InterruptedException ie) {
+            System.out.println(ie);
         }
 
-        /* Set response to something else when gameState update times out
+        /* If game state has not been updated, inform client with 'Observer timeout' message.
          */
         response = observer.getGameState() == null ? "Observer timeout" : observer.getGameState();
+
         try {
             t.sendResponseHeaders(200, response.getBytes(StandardCharsets.UTF_8).length);
             t.getResponseBody().write(response.getBytes());
@@ -89,15 +94,14 @@ public class Scheduler extends Thread {
      */
     @Override
     public void run() {
-        long then = System.currentTimeMillis();
-        long now = System.currentTimeMillis();
 
         while(true) {
-            while(now - then < 20) {
-                now = System.currentTimeMillis();
-            }
-            then = now;
+            try {
+                this.sleep(10);
+            } catch (InterruptedException exc) { System.out.println(exc); }
+          //  System.out.println(System.currentTimeMillis());
             bufferToGame();
+
         }
     }
 

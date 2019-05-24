@@ -13,33 +13,33 @@ public class PlayerVessel extends Vessel {
     private boolean keyDown;
     private boolean keySpace;
     final int PROJECTILE_SPACING = 10;
-    private int projectileAccum = 0;
+    private int projectileAccum = 1;
     private int maxHealth;
-    public int playerID;
     public HashMap<String, Boolean> commands = new HashMap<>(5);
 
     Game game;
     Entities entities;
 
-    public PlayerVessel( int playerID, int minX, int minY, int speed, int collideDamage, int health,
-                         boolean active, Game game, boolean friendly, String direction, int height,
-                        int width) {
+    public PlayerVessel( int minX, int minY, int speed, int collideDamage, int health,
+                         boolean active, Game game, String direction, int height,
+                        int width, int playerID) {
 
-        super(minX, minY, speed, collideDamage, health, active, friendly, direction, height, width);
+        super(minX, minY, speed, collideDamage, health, active,  direction, height, width, playerID);
 
         position[0] = minX;
         position[1] = minY;
         this.game = game;
         maxHealth = health;
         this.playerID = playerID;
-
         entities = game.entities;
     }
-
 
     public int getPlayerID() {
         return playerID;
     }
+
+    @Override
+    public boolean isPlayer() { return true; }
 
     public int[] getPosition() {
         position[0] = getMinX();
@@ -47,7 +47,6 @@ public class PlayerVessel extends Vessel {
 
         return position;
     }
-
 
     /* The boolean values of 'commands' will be used in routine() to update this object's state.
      * 'ce' is space (it was easier to write the key listeners in index.html by using this name for space).
@@ -73,20 +72,14 @@ public class PlayerVessel extends Vessel {
         if (commands.get("S")) Movement.moveS(this,
                 getMaxY() < game.FRAME_HEIGHT ? getSpeed() : 0);
         if (commands.get("space")) fire();
-
-
-
     }
-
-
-
 
     @Override
     protected void initializeProjectile() {  // This creates two new projectiles and adds them to entities.projectilesList
 
         entities.addProjectileToList(new Projectile(getMinX(), getMinY() + 9, 4,
-                5, true, getPlayerID(), game, true,
-                Movement.N, 34, 23, false) {
+                4, true, getVesselID(), 1000, game,
+                Movement.N, 5, 5, false) {
 
             @Override
             public void routine() {
@@ -104,8 +97,8 @@ public class PlayerVessel extends Vessel {
 
         });
         entities.addProjectileToList(new Projectile(getMinX() + 28, getMinY() + 9,4,
-                5, true, getPlayerID(), game, true,
-                Movement.N, 54, 76, false) {
+                4, true, getVesselID(), 1000,game,
+                Movement.N, 5, 5, false) {
 
             @Override
             public void routine() {
@@ -123,6 +116,8 @@ public class PlayerVessel extends Vessel {
         });
     }
 
+    /* Initialize projectile, and add integer to projectileAccum.
+     */
     protected void fire() { // Space out projectile initialization
         projectileAccum++;
 

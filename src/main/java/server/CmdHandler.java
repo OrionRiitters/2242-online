@@ -8,6 +8,8 @@ import statemanager.Scheduler;
 import java.io.IOException;
 import java.io.InputStream;
 
+/* Takes input stream, writes it to input buffer, then calls on Scheduler to write a response.
+ */
 public class CmdHandler implements HttpHandler {
 
     public void handle(HttpExchange t) throws IOException {
@@ -17,7 +19,6 @@ public class CmdHandler implements HttpHandler {
         int slot = inputBuffer.streamToBuffer(is);
         Scheduler scheduler = Scheduler.get_instance();
 
-        long now = System.currentTimeMillis();
-        scheduler.writeResponse(slot, t, now);
+        scheduler.writeResponse(slot, t);
     }
 }

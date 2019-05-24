@@ -16,7 +16,6 @@ public class Placeholder {
         for (String s : buffer) {
             if (s != null) {
                 JSONObject json = new JSONObject(s);
-                System.out.println(s);
                 int playerID = (json.getInt("id"));
 
                 PlayerVessel pv;
@@ -38,23 +37,27 @@ public class Placeholder {
         StateObservable stateObservable = StateObservable.get_instance();
         Integer[] players = game.getPlayers();
 
-        game.entities.runRoutines();
+        game.updateState();
 
         String state = writeStateJSON(game.getGameState());
-
         stateObservable.setPlayers(players);
         stateObservable.setGameState(state);
+
         if (stateObservable.getGameState() == null) {
             stateObservable.setGameState("Game state failed to set.");
         }
     }
 
-    /*  Documentation that is very helpful in understanding the JSONWriter object.
+    /* Documentation that is very helpful in understanding the JSONWriter object.
      * http://stleary.github.io/JSON-java/org/json/JSONWriter.html
      */
     private static String writeStateJSON(ArrayList<Integer[]> state) {
         StringBuilder outerString = new StringBuilder();
         JSONWriter outerWriter = new JSONWriter(outerString).array();
+        /* Frame value is used in the client to order received game states
+         * before the oldest one is rendered to canvas.
+         */
+        outerWriter.object().key("frame").value(game.getFrame()).endObject();
 
         for (Integer[] a : state) {
             JSONWriter innerWriter = outerWriter.array();
