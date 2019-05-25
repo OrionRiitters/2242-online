@@ -1,6 +1,6 @@
 package statemanager;
 
-import gamelogic.Placeholder;
+import gamelogic.StateUpdater;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
@@ -82,7 +82,7 @@ public class Scheduler extends Thread {
     /* Called by scheduler thread to push client commands to gamelogic
      */
     public void bufferToGame() {
-        Placeholder.consumeBuffer(inputBuffer.getBuffer());
+        StateUpdater.consumeBuffer(inputBuffer.getBuffer());
         inputBuffer.flush();
     }
 

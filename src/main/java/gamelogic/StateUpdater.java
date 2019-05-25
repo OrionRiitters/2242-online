@@ -7,10 +7,13 @@ import org.json.JSONWriter;
 import statemanager.StateObservable;
 import org.json.JSONObject;
 
-public class Placeholder {
+public class StateUpdater {
 
     private static Game game = new Game();
 
+    /* Iterates over strings in inputBuffer, JSONifying their contents and pushing
+     * the JSON to each relevant player.
+     */
     public static void consumeBuffer(String[] buffer) {
 
         for (String s : buffer) {
@@ -30,8 +33,7 @@ public class Placeholder {
         }
         updateGameState();
     }
-
-    /* This
+    /* Calls on game to update its state, then calls on Observable to update its own state.
      */
     private static void updateGameState() {
         StateObservable stateObservable = StateObservable.get_instance();
