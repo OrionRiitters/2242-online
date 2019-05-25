@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
  */
 public class TheServer extends Thread {
     String port_env = System.getenv("PORT");
-    final int PORT = Integer.parseInt(port_env);
+    final int PORT = 8080;
 
     @Override
     public void run() {
